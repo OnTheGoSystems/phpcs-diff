@@ -1,11 +1,16 @@
 <?php
 
-class PHPCS_Diff {
+namespace PHPCSDiff;
+
+use PHPCSDiff\Backends\Subversion;
+
+class Main {
 
 	// PHPCS configuration.
 	public $phpcs_command = 'phpcs'; // You might need to provde a path to phpcs.phar file.
 	public $standards_location = '~/PHP_CodeSniffer/Standards';
 
+	/** @var Subversion */
 	public $version_control;
 
 	public $allowed_extensions;
@@ -84,14 +89,14 @@ class PHPCS_Diff {
 		$diff = str_replace( "\r", "\n", $diff );
 		$diff = str_replace( "\r\n", "\n", $diff );
 		if ( false === $this->no_diff_to_big && strlen( $diff ) > 25000000 ) {
-			$error = new WP_Error( 'diff-too-big', 'The Diff is too big to parse' );
+			$error = new \WP_Error( 'diff-too-big', 'The Diff is too big to parse' );
 			if ( true !== $this->nocache ) {
 				//wp_cache_set( $cache_key, $error, $cache_group, 3*HOUR_IN_SECONDS );
 			}
 			return $error;
 		}
 		if ( true === empty( $diff ) ) {
-			return new WP_Error( 'diff_parsing_error', 'Error parsing diff.' );
+			return new \WP_Error( 'diff_parsing_error', 'Error parsing diff.' );
 		}
 
 		$diff_info	  = $this->version_control->parse_diff_for_info( $diff );
@@ -142,7 +147,7 @@ class PHPCS_Diff {
 		}
 
 		$results_for_newest_rev = $this->run_phpcs_for_file_revision( $filename, $newest_rev );
-		if ( true === empty( $results_for_newest_rev ) ) {
+		if ( empty( $results_for_newest_rev ) ) {
 			return false;
 		}
 
@@ -151,7 +156,7 @@ class PHPCS_Diff {
 		}
 
 		$results_for_oldest_rev = $this->run_phpcs_for_file_revision( $filename, $oldest_rev );
-		if ( true === empty( $results_for_oldest_rev ) ) {
+		if ( empty( $results_for_oldest_rev ) ) {
 			return $this->parse_phpcs_results( $results_for_newest_rev );
 		}
 
@@ -160,8 +165,8 @@ class PHPCS_Diff {
 
 	// @todo: figure out how to prevent wrong file extension error - it's not that urgent since it is present in both diffs, but still.
 	private function run_phpcs_for_file_revision( $filename, $revision ) {
-		$cache_key	 = 'phpcs_file_rev_' . md5( $filename . $revision . $this->phpcs_standard );
-		$cache_group = 'vip-phpcs';
+		//$cache_key	 = 'phpcs_file_rev_' . md5( $filename . $revision . $this->phpcs_standard );
+		//$cache_group = 'vip-phpcs';
 		if ( true !== $this->nocache ) {
 			$result	 = false; //wp_cache_get( $cache_key, $cache_group );
 		} else {
@@ -259,7 +264,9 @@ class PHPCS_Diff {
 		$wp_object_cache->stats = array();
 		$wp_object_cache->memcache_debug = array();
 		$wp_object_cache->cache = array();
-		$wp_object_cache->__remoteset(); // important
+		if( method_exists( $wp_object_cache, '__remoteset' ) ) {
+			$wp_object_cache->__remoteset(); // important
+		}
 	}
 
 }

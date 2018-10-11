@@ -1,5 +1,8 @@
 <?php
 
+use PHPCSDiff\Backends\Subversion;
+use PHPCSDiff\Main;
+
 /**
  * PHPCS Diff WP CLI command
  *
@@ -48,7 +51,7 @@ class PHPCS_Diff_CLI_Command extends WP_CLI_Command {
 	 */
 	public function __invoke( $args, $assoc_args ) {
 
-		require_once( PHPCS_DIFF_PLUGIN_DIR . 'inc/class-phpcs-diff.php' );
+		require_once 'vendor/autoload.php';
 
 		$repo = sanitize_title( $assoc_args['repo'] );
 		$start_revision = absint( $assoc_args['start_revision'] );
@@ -68,8 +71,8 @@ class PHPCS_Diff_CLI_Command extends WP_CLI_Command {
 		}
 
 		// @todo: replace SVN version control backend with any other parser you might want to use - eg.: git
-		require_once( PHPCS_DIFF_PLUGIN_DIR . 'backends/class-phpcs-diff-svn.php' );
-		$phpcs = new PHPCS_Diff( new PHPCS_Diff_SVN( $repo ) );
+		//require_once( PHPCS_DIFF_PLUGIN_DIR . 'backends/class-phpcs-diff-svn.php' );
+		$phpcs = new Main( new Subversion( $repo ) );
 
 		if ( true === array_key_exists( 'ignore-diff-too-big', $assoc_args ) ) {
 			$phpcs->set_no_diff_too_big( true );

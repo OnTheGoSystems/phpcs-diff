@@ -1,6 +1,8 @@
 <?php
 
-class PHPCS_Diff_SVN {
+namespace PHPCSDiff\Backends;
+
+class Subversion {
 
 	// SVN credentials used for checking out individual revisions.
 	private $svn_username = '';
@@ -10,7 +12,7 @@ class PHPCS_Diff_SVN {
 	public $repo; // repository's slug.
 	public $repo_url; // SVN repository URL.
 
-	function __construct( $repo, $options = array() ) {
+	public function __construct( $repo, $options = array() ) {
 
 		if ( true === defined( 'PHPCS_DIFF_SVN_USERNAME' ) ) {
 			$this->svn_username = PHPCS_DIFF_SVN_USERNAME;
@@ -31,6 +33,12 @@ class PHPCS_Diff_SVN {
 
 			case 'hello-dolly':
 				$this->repo_url = 'https://plugins.svn.wordpress.org/hello-dolly';
+				break;
+			case 'types':
+				$this->repo_url = 'https://plugins.svn.wordpress.org/types/';
+				break;
+			case 'code-snippets':
+				$this->repo_url = 'https://plugins.svn.wordpress.org/code-snippets/';
 				break;
 
 			# Add new repos here. See details at the top of this file.
@@ -96,7 +104,7 @@ class PHPCS_Diff_SVN {
 	 *
 	 * @return array information about the diff
 	 */
-	public static function parse_diff_for_info( $diff_file ){
+	public function parse_diff_for_info( $diff_file ) {
 
 		$files = preg_split( '/^Index: (.+)$/m', $diff_file, NULL, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE );
 
@@ -176,7 +184,8 @@ class PHPCS_Diff_SVN {
 	}
 
 	public function run_phpcs_for_file_at_revision( $filename, $revision, $phpcs_command, $standards_location, $phpcs_standard ) {
-		$command_string = sprintf( 'svn cat %s --non-interactive --no-auth-cache --username %s --password %s -r %d | %s --runtime-set installed_paths %s --standard=%s --stdin-path=%s',
+		$command_string = sprintf(
+			'svn cat %s --non-interactive --no-auth-cache --username %s --password %s -r %d | %s --runtime-set installed_paths %s --standard=%s --stdin-path=%s -',
 			escapeshellarg( esc_url_raw( trailingslashit( $this->repo_url ) . ltrim( $filename, '/' ) ) ),
 			escapeshellarg( $this->svn_username ),
 			escapeshellarg( $this->svn_password ),
