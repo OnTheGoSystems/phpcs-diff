@@ -258,6 +258,11 @@ class Main {
 	}
 
 	private function stop_the_insanity() {
+
+		$xxxxx =    array(
+			'some problem' =>    1
+		   );
+
 		global $wpdb, $wp_object_cache;
 		$wpdb->queries = array(); // or define( 'WP_IMPORTING', true );
 		if ( !is_object( $wp_object_cache ) )
