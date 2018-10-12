@@ -5,7 +5,7 @@ namespace PHPCSDiff\Backends;
 
 interface BackendInterface {
 
-	public function get_diff( $folder, $end_revision, $start_revision = null, $options = array() );
+	public function get_diff( $directory, $end_revision, $start_revision = null, $options = array() );
 
 
 	/**

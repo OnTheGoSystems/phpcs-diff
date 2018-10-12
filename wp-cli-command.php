@@ -1,6 +1,7 @@
 <?php
 
 use PHPCSDiff\Backends\Subversion;
+use PHPCSDiff\Log\WpcliLogger;
 use PHPCSDiff\Main;
 
 /**
@@ -16,7 +17,7 @@ class PHPCS_Diff_CLI_Command extends WP_CLI_Command {
 	 * Run PHPCS against committed revisions
 	 *
 	 * ## OPTIONS
-	 * --repo=<repo>
+	 * [--repo=<repo>]
 	 * : The VIP theme to run a scan on. This can also be a top level plugins directory.
 	 *
 	 * --start_revision=<end-revision>
@@ -24,6 +25,9 @@ class PHPCS_Diff_CLI_Command extends WP_CLI_Command {
 	 *
 	 * --end_revision=<start-revision>
 	 * : The end revision to test.
+	 *
+	 * --vcs=<vcs-name>
+	 * : Version control system used. Allowed values are: svn and git
 	 *
 	 * [--format=<format>]
 	 * : Specify the output format. Allowed values are: table(default) and markdown
@@ -40,22 +44,22 @@ class PHPCS_Diff_CLI_Command extends WP_CLI_Command {
 	 * [--excluded-exts=<excluded-exts>]
 	 * : Ignore specified extensions. Use comma for separating multiple extensions
 	 *
-	 * [--folder=<folder>]
-	 * : Process files in specific folder
+	 * [--dir=<folder>]
+	 * : Process files in specific directory
 	 *
 	 * ## EXAMPLES
 	 * wp phpcs-diff --repo="hello-dolly" --start_revision=99998 --end_revision=100000
 	 *
 	 * @subcommand phpcs-diff
-	 * @synopsis --repo=<repo> --start_revision=<start-revision> --end_revision=<end-revision> [--standard=<standard>] [--format=<format>] [--nocache] [--ignore-diff-too-big] [--excluded-exts=<excluded-exts>] [--folder=<folder>]
+	 * @synopsis --vcs=<vcs> [--repo=<repo>] --start_revision=<start-revision> --end_revision=<end-revision> [--standard=<standard>] [--format=<format>] [--nocache] [--ignore-diff-too-big] [--excluded-exts=<excluded-exts>] [--dir=<folder>]
 	 */
 	public function __invoke( $args, $assoc_args ) {
 
 		require_once 'vendor/autoload.php';
 
 		$repo = sanitize_title( $assoc_args['repo'] );
-		$start_revision = absint( $assoc_args['start_revision'] );
-		$end_revision = absint( $assoc_args['end_revision'] );
+		$start_revision = $assoc_args['start_revision'];
+		$end_revision = $assoc_args['end_revision'];
 		if ( true === array_key_exists( 'format', $assoc_args ) && true === in_array( $assoc_args['format'], array( 'table', 'markdown' ), true ) ) {
 			$format = $assoc_args['format'];
 		} else {
@@ -64,15 +68,30 @@ class PHPCS_Diff_CLI_Command extends WP_CLI_Command {
 		if ( true === array_key_exists( 'excluded-exts', $assoc_args ) && false === empty( $assoc_args['excluded-exts'] ) ) {
 			$excluded_exts = array_map( 'sanitize_text_field', explode( ',', $assoc_args['excluded-exts'] ) );
 		}
-		if ( true === array_key_exists( 'folder', $assoc_args ) ) {
-			$folder = sanitize_title( $assoc_args['folder'] );
+		if ( true === array_key_exists( 'dir', $assoc_args ) ) {
+			$dir = sanitize_title( $assoc_args['dir'] );
 		} else {
-			$folder = '';
+			$dir = '';
+		}
+
+		$logger = new WpcliLogger();
+
+		$vcs = array_key_exists( 'vcs', $assoc_args ) ? $assoc_args['vcs'] : 'git';
+		switch( $vcs ) {
+			case 'svn':
+				$version_control = new Subversion( $repo, $logger );
+				break;
+			case 'git':
+				$version_control = new \PHPCSDiff\Backends\Git( $repo, $logger );
+				break;
+			default:
+				\WP_CLI::error( 'Unsupported value for the --vcs argument.' );
+				return;
 		}
 
 		// @todo: replace SVN version control backend with any other parser you might want to use - eg.: git
 		//require_once( PHPCS_DIFF_PLUGIN_DIR . 'backends/class-phpcs-diff-svn.php' );
-		$phpcs = new Main( new Subversion( $repo ) );
+		$phpcs = new Main( $version_control, $logger );
 
 		if ( true === array_key_exists( 'ignore-diff-too-big', $assoc_args ) ) {
 			$phpcs->set_no_diff_too_big( true );
@@ -88,7 +107,17 @@ class PHPCS_Diff_CLI_Command extends WP_CLI_Command {
 		if ( true === isset( $excluded_exts ) && false === empty( $excluded_exts ) && true === is_array( $excluded_exts ) ) {
 			$phpcs->set_excluded_extensions( $excluded_exts );
 		}
-		$found_issues = $phpcs->run( $start_revision, $end_revision, $folder );
+		try {
+			$found_issues = $phpcs->run( $start_revision, $end_revision, $dir );
+		} catch( Exception $e ) {
+			WP_CLI::error_multi_line(
+				"Uncaught exception when processing the repository: \n\n"
+				. $e->getMessage()
+				. ' in ' . $e->getFile() . ' on line ' . $e->getLine() . "\n"
+				. 'Trace: ' . $e->getTraceAsString()
+			);
+			return;
+		}
 
 		if ( is_wp_error( $found_issues ) ) {
 			WP_CLI::error( $found_issues->get_error_message(), true );

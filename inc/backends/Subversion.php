@@ -2,7 +2,9 @@
 
 namespace PHPCSDiff\Backends;
 
-class Subversion {
+use PHPCSDiff\Log\LoggerInterface;
+
+class Subversion implements BackendInterface {
 
 	// SVN credentials used for checking out individual revisions.
 	private $svn_username = '';
@@ -12,12 +14,16 @@ class Subversion {
 	public $repo; // repository's slug.
 	public $repo_url; // SVN repository URL.
 
-	public function __construct( $repo, $options = array() ) {
+	/** @var LoggerInterface */
+	private $log;
 
-		if ( true === defined( 'PHPCS_DIFF_SVN_USERNAME' ) ) {
+
+	public function __construct( $repo, LoggerInterface $log, $options = array() ) {
+
+		if ( defined( 'PHPCS_DIFF_SVN_USERNAME' ) ) {
 			$this->svn_username = PHPCS_DIFF_SVN_USERNAME;
 		}
-		if ( true === defined( 'PHPCS_DIFF_SVN_PASSWORD' ) ) {
+		if ( defined( 'PHPCS_DIFF_SVN_PASSWORD' ) ) {
 			$this->svn_password = PHPCS_DIFF_SVN_PASSWORD;
 		}
 
@@ -50,9 +56,11 @@ class Subversion {
 		}
 
 		$this->repo = $repo;
+
+		$this->log = $log;
 	}
 
-	public function get_diff( $folder, $end_revision, $start_revision = null, $options = array() ) {
+	public function get_diff( $directory, $end_revision, $start_revision = null, $options = array() ) {
 		$summarize			 = false;
 		$xml 				 = false;
 		$ignore_space_change = false;
@@ -79,7 +87,7 @@ class Subversion {
 			$start_revision = 1;
 		}
 
-		$repo_url = esc_url_raw( trailingslashit( $this->repo_url ) . urlencode( sanitize_title( $folder ) ) );
+		$repo_url = esc_url_raw( trailingslashit( $this->repo_url ) . urlencode( sanitize_title( $directory ) ) );
 
 		$diff = shell_exec(
 			sprintf( 'svn diff %s --non-interactive --no-auth-cache --username %s --password %s -r %d:%d %s %s %s',

@@ -3,6 +3,7 @@
 namespace PHPCSDiff;
 
 use PHPCSDiff\Backends\Subversion;
+use PHPCSDiff\Log\LoggerInterface;
 
 class Main {
 
@@ -25,7 +26,11 @@ class Main {
 
 	private $no_diff_to_big = false;
 
-	public function __construct( $version_control, $options = array() ) {
+	/** @var LoggerInterface */
+	private $log;
+
+
+	public function __construct( $version_control, LoggerInterface $log, $options = array() ) {
 
 		if ( true === defined( 'PHPCS_DIFF_COMMAND' ) && false === empty( PHPCS_DIFF_COMMAND ) ) {
 			$this->phpcs_command = PHPCS_DIFF_COMMAND;
@@ -43,6 +48,8 @@ class Main {
 		$this->version_control = $version_control;
 
 		$this->allowed_extensions = array( 'php', 'js' );
+
+		$this->log = $log;
 	}
 
 	public function set_nocache( $nocache = false ) {
@@ -66,14 +73,9 @@ class Main {
 		$this->excluded_extensions = $excluded_exts;
 	}
 
-	public function run( $oldest_rev, $newest_rev, $folder = '' ) {
+	public function run( $oldest_rev, $newest_rev, $directory = '' ) {
 
-		$oldest_rev = absint( $oldest_rev );
-		$newest_rev = absint( $newest_rev );
-		$folder		= sanitize_title( $folder );
-
-		$cache_key	  = md5( 'phpcs_' . $this->version_control->repo . $folder . $oldest_rev . $newest_rev );
-		$cache_group  = 'vip-phpcs';
+		$directory	= sanitize_title( $directory );
 
 		if ( true !== $this->nocache ) {
 			$found_issues = false; //wp_cache_get( $cache_key, $cache_group );
@@ -82,7 +84,7 @@ class Main {
 			}
 		}
 
-		$diff  = trim( $this->version_control->get_diff( $folder, $newest_rev, $oldest_rev, array( 'ignore-space-change' => true ) ) );
+		$diff  = trim( $this->version_control->get_diff( $directory, $newest_rev, $oldest_rev, array( 'ignore-space-change' => true ) ) );
 
 		$this->stop_the_insanity();
 
@@ -115,7 +117,7 @@ class Main {
 				} else {
 					$is_new_file = false;
 				}
-				$processed_file = $this->process_file( $folder . '/' . $filename, $oldest_rev, $newest_rev, $is_new_file );
+				$processed_file = $this->process_file( $directory . '/' . $filename, $oldest_rev, $newest_rev, $is_new_file );
 				if ( false === $processed_file || true === empty( $processed_file ) ) {
 					continue;
 				}
