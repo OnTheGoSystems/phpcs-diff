@@ -260,7 +260,7 @@ class Main {
 	private function stop_the_insanity() {
 
 		$xxxxx =    array(
-			'some problem' =>    1
+			'some phpcs problem' =>    1
 		   );
 
 		global $wpdb, $wp_object_cache;
