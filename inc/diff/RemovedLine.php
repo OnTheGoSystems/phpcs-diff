@@ -20,6 +20,8 @@ class RemovedLine implements LineInterface {
 		return [
 			'is_removed' => true,
 			'old_line_number' => $this->old_line_number,
+			'is_added' => false,
+			'is_context' => false,
 		];
 	}
 

@@ -108,13 +108,13 @@ class Subversion implements BackendInterface {
 	/**
 	 * Collect information about the diff
 	 *
-	 * @param string $diff_file full svn .diff file to be parsed for information
+	 * @param string $diff_string full svn .diff file to be parsed for information
 	 *
 	 * @return array information about the diff
 	 */
-	public function parse_diff_for_info( $diff_file ) {
+	public function parse_diff_for_info( $diff_string ) {
 
-		$files = preg_split( '/^Index: (.+)$/m', $diff_file, NULL, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE );
+		$files = preg_split( '/^Index: (.+)$/m', $diff_string, NULL, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE );
 
 		//result is a flat array with alternating 'filename', 'file_contents', 'filename', 'file_cotnents'... let's organize that into an associative array 'file_name'=>'file_contents'
 		$diff_files = call_user_func_array( 'array_merge', array_map( function( $pair ) { return array( $pair[0] => $pair[1] ); }, array_chunk( $files, 2) ) );

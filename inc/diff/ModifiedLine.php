@@ -23,7 +23,9 @@ class ModifiedLine implements LineInterface {
 		return [
 			'is_context' => true,
 			'old_line_number' => $this->old_line_number,
-			'new_line_number' => $this->new_line_number
+			'new_line_number' => $this->new_line_number,
+			'is_added' => false,
+			'is_removed' => false,
 		];
 	}
 

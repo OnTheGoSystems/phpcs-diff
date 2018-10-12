@@ -19,7 +19,9 @@ class NewLine implements LineInterface {
 	public function to_array() {
 		return [
 			'is_added' => true,
-			'new_line_number' => $this->new_line_number
+			'new_line_number' => $this->new_line_number,
+			'is_context' => false,
+			'is_removed' => false,
 		];
 	}
 
