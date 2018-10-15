@@ -1,0 +1,113 @@
+#!/usr/bin/env php
+<?php
+
+/**
+ * Runs the phpcs-diff tool in for a git repository the current directory.
+ *
+ * Usage:
+ *
+ * phpcs-diff $start_revision $end_revision $standards
+ */
+
+namespace PHPCSDiff;
+
+use PHPCSDiff\Log\LoggerInterface;
+
+define( 'PHPCS_DIFF_PLUGIN_DIR', dirname( dirname( __FILE__ ) ) );
+define( 'PHPCS_DIFF_COMMAND', PHPCS_DIFF_PLUGIN_DIR . '/vendor/bin/phpcs' );
+define( 'PHPCS_DIFF_STANDARDS', PHPCS_DIFF_PLUGIN_DIR . '/vendor/wp-coding-standards/wpcs' );
+
+
+require_once 'vendor/autoload.php';
+
+$getopt = new \GetOpt\GetOpt(
+	[
+		[ 's', 'start_revision', \GetOpt\GetOpt::REQUIRED_ARGUMENT ],
+		[ 'e', 'end_revision', \GetOpt\GetOpt::REQUIRED_ARGUMENT ],
+		[ 't', 'tolerance',  ],
+	]
+);
+
+$getopt->getOption( 'tolerance', true )
+    ->setMode( \GetOpt\GetOpt::OPTIONAL_ARGUMENT )
+    ->setValidation( function( $value ) {
+        return in_array( $value, [ 'blockers', 'warnings', 'notes', 'none' ] );
+    } )
+    ->setDefaultValue( 'notes' );
+
+try {
+	$getopt->process();
+} catch ( \GetOpt\ArgumentException $exception ) {
+	file_put_contents( 'php://stderr', $exception->getMessage() . PHP_EOL );
+	echo PHP_EOL . $getopt->getHelpText();
+	return 1;
+}
+
+$start_revision = $getopt->getOption( 'start_revision' );
+$end_revision = $getopt->getOption( 'end_revision' );
+
+$logger = new Log\ShellLogger();
+$version_control = new Backends\Git( '', $logger );
+$controller = new Main( $version_control, $logger );
+
+try {
+	$found_issues = $controller->run( $start_revision, $end_revision, '' );
+} catch ( \Exception $e ) {
+	$logger->log(
+		LoggerInterface::ERROR,
+		"Uncaught exception when processing the repository: \n\n"
+		. $e->getMessage()
+		. ' in ' . $e->getFile() . ' on line ' . $e->getLine() . "\n"
+		. 'Trace: ' . $e->getTraceAsString()
+	);
+
+	return 1;
+}
+
+
+$blockers = $warnings = $notes = [];
+foreach ( $found_issues as $filename => $issues ) {
+	foreach ( $issues as $line => $line_issues ) {
+		foreach( $line_issues as $issue ) {
+			if ( 'ERROR' === $issue['level'] ) {
+				$blockers[] = '* ' . $filename . "#L" . $line . ' : ' . ltrim( $issue['message'], '[ x]' );
+			} else if ( 'WARNING' === $issue['level'] ) {
+				$warnings[] = '* ' . $filename . "#L" . $line . ' : ' . ltrim( $issue['message'], '[ x]' );
+			} else if ( 'NOTE' === $issue['level'] ) {
+				$notes[] = '* ' . $filename . "#L" . $line . ' : ' . ltrim( $issue['message'], '[ x]' );
+			}
+		}
+	}
+}
+
+function echo_chapter( $title, $items ) {
+    if( empty( $items ) ) {
+        return;
+    }
+
+	echo "### " . $title . PHP_EOL . PHP_EOL;
+	foreach ( $items as $item ) {
+		echo $item . PHP_EOL;
+	}
+
+	echo PHP_EOL;
+}
+
+echo_chapter( 'Blockers', $blockers );
+echo_chapter( 'Warnings', $warnings );
+echo_chapter( 'Notes', $notes );
+
+$tolerance = $getopt->getOption( 'tolerance' );
+if( 'blockers' === $tolerance ) {
+    return 0;
+} elseif( empty( $blockers ) ) {
+    if( 'warnings' === $tolerance ) {
+        return 0;
+    } elseif( empty( $warnings ) ) {
+        if( 'notes' === $tolerance || empty( $notes ) ) {
+            return 0;
+        }
+    }
+}
+
+return 1;

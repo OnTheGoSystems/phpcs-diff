@@ -75,8 +75,6 @@ class Main {
 
 	public function run( $oldest_rev, $newest_rev, $directory = '' ) {
 
-		$directory	= sanitize_title( $directory );
-
 		if ( true !== $this->nocache ) {
 			$found_issues = false; //wp_cache_get( $cache_key, $cache_group );
 			if ( false !== $found_issues ) {
@@ -92,9 +90,9 @@ class Main {
 		$diff = str_replace( "\r\n", "\n", $diff );
 		if ( false === $this->no_diff_to_big && strlen( $diff ) > 25000000 ) {
 			$error = new \WP_Error( 'diff-too-big', 'The Diff is too big to parse' );
-			if ( true !== $this->nocache ) {
-				//wp_cache_set( $cache_key, $error, $cache_group, 3*HOUR_IN_SECONDS );
-			}
+//			if ( true !== $this->nocache ) {
+//				//wp_cache_set( $cache_key, $error, $cache_group, 3*HOUR_IN_SECONDS );
+//			}
 			return $error;
 		}
 		if ( true === empty( $diff ) ) {
@@ -126,9 +124,9 @@ class Main {
 			}
 		}
 
-		if ( true !== $this->nocache ) {
-			//wp_cache_set( $cache_key, $found_issues, $cache_group, 3*HOUR_IN_SECONDS );
-		}
+//		if ( true !== $this->nocache ) {
+//			//wp_cache_set( $cache_key, $found_issues, $cache_group, 3*HOUR_IN_SECONDS );
+//		}
 
 		return $found_issues;
 
@@ -143,7 +141,7 @@ class Main {
 		}
 
 		foreach( $this->excluded_extensions as $excluded_ext ) {
-			if ( true === wp_endswith( $filename, $excluded_ext ) ) {
+			if ( function_exists( 'wp_endswith' ) && wp_endswith( $filename, $excluded_ext ) ) {
 				return false;
 			}
 		}
@@ -179,9 +177,9 @@ class Main {
 
 			$result = $this->version_control->run_phpcs_for_file_at_revision( $filename, $revision, $this->phpcs_command, $this->standards_location, $this->phpcs_standard );
 
-			if ( true !== $this->nocache ) {
-				//wp_cache_set( $cache_key, $result, $cache_group, 6*HOUR_IN_SECONDS );
-			}
+//			if ( true !== $this->nocache ) {
+//				//wp_cache_set( $cache_key, $result, $cache_group, 6*HOUR_IN_SECONDS );
+//			}
 		}
 		return $result;
 	}
@@ -258,11 +256,10 @@ class Main {
 	}
 
 	private function stop_the_insanity() {
-
-		$xxxxx =    array(
-			'some phpcs problem' =>    1
-		   );
-
+		if( ! defined( 'ABSPATH' ) ) {
+			// Because this may run completely out of a WordPress scope.
+			return;
+		}
 		global $wpdb, $wp_object_cache;
 		$wpdb->queries = array(); // or define( 'WP_IMPORTING', true );
 		if ( !is_object( $wp_object_cache ) )

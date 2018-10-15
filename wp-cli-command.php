@@ -89,26 +89,24 @@ class PHPCS_Diff_CLI_Command extends WP_CLI_Command {
 				return;
 		}
 
-		// @todo: replace SVN version control backend with any other parser you might want to use - eg.: git
-		//require_once( PHPCS_DIFF_PLUGIN_DIR . 'backends/class-phpcs-diff-svn.php' );
-		$phpcs = new Main( $version_control, $logger );
+		$controller = new Main( $version_control, $logger );
 
 		if ( true === array_key_exists( 'ignore-diff-too-big', $assoc_args ) ) {
-			$phpcs->set_no_diff_too_big( true );
+			$controller->set_no_diff_too_big( true );
 		}
 		if ( true === array_key_exists( 'nocache', $assoc_args ) ) {
-			$phpcs->set_nocache( true );
+			$controller->set_nocache( true );
 		}
 		if ( true === array_key_exists( 'standard', $assoc_args )
 		     && true === in_array( sanitize_text_field( $assoc_args['standard'] ), array( 'WordPress', 'WordPress-VIP', 'WordPressVIPminimum' ), true ) )
 		{
-			$phpcs->set_phpcs_standard( sanitize_text_field( $assoc_args['standard'] ) );
+			$controller->set_phpcs_standard( sanitize_text_field( $assoc_args['standard'] ) );
 		}
 		if ( true === isset( $excluded_exts ) && false === empty( $excluded_exts ) && true === is_array( $excluded_exts ) ) {
-			$phpcs->set_excluded_extensions( $excluded_exts );
+			$controller->set_excluded_extensions( $excluded_exts );
 		}
 		try {
-			$found_issues = $phpcs->run( $start_revision, $end_revision, $dir );
+			$found_issues = $controller->run( $start_revision, $end_revision, $dir );
 		} catch( Exception $e ) {
 			WP_CLI::error_multi_line(
 				"Uncaught exception when processing the repository: \n\n"
