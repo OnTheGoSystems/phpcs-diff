@@ -1,17 +1,19 @@
 {
   "name": "otgs/phpcs-diff",
   "description": "",
-  "homepage": "https://git.onthegosystems.com/toolset/toolset-common",
+  "homepage": "https://github.com/zaantar/phpcs-diff",
   "type": "library",
   "license": "GPL-2.0",
+  "version": "1.0.0-dev",
   "authors": [
     {
       "name": "Jan Štětina",
       "email": "jan.s@onthegosystems.com",
-      "homepage": "https://toolset.com"
+      "homepage": "https://onthegosystems.com"
     }
   ],
   "require": {
+    "php": "^5.6 || ^7.0",
     "squizlabs/php_codesniffer": "3.*",
     "wp-coding-standards/wpcs": "*",
     "dealerdirect/phpcodesniffer-composer-installer": "^0.4.4",
