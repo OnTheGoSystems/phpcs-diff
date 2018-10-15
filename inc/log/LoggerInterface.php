@@ -2,7 +2,11 @@
 
 namespace PHPCSDiff\Log;
 
-
+/**
+ * Interface of a logger.
+ *
+ * @package PHPCSDiff\Log
+ */
 interface LoggerInterface {
 
 	const DEBUG = 0;

@@ -3,9 +3,14 @@
 namespace PHPCSDiff\Backends;
 
 
+/**
+ * Represents implementations for various VCS support.
+ *
+ * @package PHPCSDiff\Backends
+ */
 interface BackendInterface {
 
-	public function get_diff( $directory, $end_revision, $start_revision = null, $options = array() );
+	public function get_diff( $directory, $end_commit, $start_revision = null, $options = array() );
 
 
 	/**

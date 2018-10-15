@@ -12,8 +12,15 @@ namespace PHPCSDiff\Diff;
 use SebastianBergmann\Diff\Chunk;
 use SebastianBergmann\Diff\Line;
 
+/**
+ * Processes a chunk from a diff and produce an array of LineInterface objects.
+ *
+ * @package PHPCSDiff\Diff
+ */
 class ChunkBuilder {
 
+
+	/** @var LineBuilder[] */
 	private $lines = [];
 
 

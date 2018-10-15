@@ -3,17 +3,33 @@
 namespace PHPCSDiff\Diff;
 
 
+/**
+ * Holds information about a single diff.
+ *
+ * @package PHPCSDiff\Diff
+ */
 class DiffInfo {
 
 
+	/** @var File[] */
 	private $files = [];
 
 
+	/**
+	 * Add a new file to the diff.
+	 *
+	 * @param File $file
+	 */
 	public function add_file( File $file ) {
 		$this->files[] = $file;
 	}
 
 
+	/**
+	 * Produce an array that is suitable for further processing.
+	 *
+	 * @return array
+	 */
 	public function to_array() {
 		$file_diffs = [];
 

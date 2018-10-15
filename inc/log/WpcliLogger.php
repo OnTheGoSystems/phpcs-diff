@@ -1,14 +1,14 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: zaantar
- * Date: 11.10.18
- * Time: 17:12
- */
+
 
 namespace PHPCSDiff\Log;
 
 
+/**
+ * Logger that writes to the WP_CLI output.
+ *
+ * @package PHPCSDiff\Log
+ */
 class WpcliLogger implements LoggerInterface {
 
 	/** @noinspection PhpDocMissingThrowsInspection */
