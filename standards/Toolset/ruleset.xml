@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<ruleset name="Toolset">
+    <description>Toolset coding standards, work in progress.</description>
+
+    <autoload>./../WordPress/PHPCSAliases.php</autoload>
+
+</ruleset>

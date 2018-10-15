@@ -24,7 +24,9 @@ $getopt = new \GetOpt\GetOpt(
 	[
 		[ 's', 'start_revision', \GetOpt\GetOpt::REQUIRED_ARGUMENT ],
 		[ 'e', 'end_revision', \GetOpt\GetOpt::REQUIRED_ARGUMENT ],
-		[ 't', 'tolerance',  ],
+        [ 't', 'tolerance' ],
+        [ 'standard' ],
+        [ 'log_level' ],
 	]
 );
 
@@ -34,6 +36,18 @@ $getopt->getOption( 'tolerance', true )
         return in_array( $value, [ 'blockers', 'warnings', 'notes', 'none' ] );
     } )
     ->setDefaultValue( 'notes' );
+
+$getopt->getOption( 'standard', true )
+	->setMode( \GetOpt\GetOpt::OPTIONAL_ARGUMENT )
+	->setValidation( function( $value ) {
+		return in_array( $value, [ 'WordPress', 'WordPress-VIP', 'WordPress-Core', 'WordPress-Docs', 'WordPress-Extra', 'Toolset' ] );
+	} )
+	->setDefaultValue( 'WordPress' );
+
+$getopt->getOption( 'log_level', true )
+	->setMode( \GetOpt\GetOpt::OPTIONAL_ARGUMENT )
+	->setValidation( 'is_numeric' )
+	->setDefaultValue( LoggerInterface::WARNING );
 
 try {
 	$getopt->process();
@@ -45,10 +59,13 @@ try {
 
 $start_revision = $getopt->getOption( 'start_revision' );
 $end_revision = $getopt->getOption( 'end_revision' );
+$phpcs_standard = $getopt->getOption( 'standard' );
+$log_level = $getopt->getOption( 'log_level' );
 
-$logger = new Log\ShellLogger();
+$logger = new Log\ShellLogger( (int) $log_level );
 $version_control = new Backends\Git( '', $logger );
 $controller = new Main( $version_control, $logger );
+$controller->set_phpcs_standard( $phpcs_standard );
 
 try {
 	$found_issues = $controller->run( $start_revision, $end_revision, '' );
@@ -96,6 +113,10 @@ function echo_chapter( $title, $items ) {
 echo_chapter( 'Blockers', $blockers );
 echo_chapter( 'Warnings', $warnings );
 echo_chapter( 'Notes', $notes );
+printf(
+        "\nAnalysis completed with %s blockers, %s warnings and %s notes.\n",
+        count( $blockers ), count( $warnings ), count( $notes )
+);
 
 $tolerance = $getopt->getOption( 'tolerance' );
 if( 'blockers' === $tolerance ) {
