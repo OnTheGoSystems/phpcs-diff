@@ -193,7 +193,7 @@ class Subversion implements BackendInterface {
 
 	public function run_phpcs_for_file_at_revision( $filename, $revision, $phpcs_command, $standards_location, $phpcs_standard ) {
 		$command_string = sprintf(
-			'svn cat %s --non-interactive --no-auth-cache --username %s --password %s -r %d | %s --runtime-set installed_paths %s --standard=%s --stdin-path=%s -',
+			'svn cat %s --non-interactive --no-auth-cache --username %s --password %s -r %d | %s --report=json --runtime-set installed_paths %s --standard=%s --stdin-path=%s -',
 			escapeshellarg( esc_url_raw( trailingslashit( $this->repo_url ) . ltrim( $filename, '/' ) ) ),
 			escapeshellarg( $this->svn_username ),
 			escapeshellarg( $this->svn_password ),

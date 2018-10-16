@@ -150,7 +150,7 @@ class Git implements BackendInterface {
 		);
 
 		$phpcs_command = sprintf(
-			'%s --runtime-set installed_paths %s --standard=%s --stdin-path=%s -',
+			'%s --report=json --runtime-set installed_paths %s --standard=%s --stdin-path=%s -',
 			escapeshellcmd( $phpcs_command ),
 			escapeshellarg( $standards_location ),
 			escapeshellarg( $phpcs_standard ),

@@ -82,16 +82,22 @@ try {
 }
 
 
+function render_line( $filename, $line, $message ) {
+    return '* ' . $filename . ":" . $line . PHP_EOL . "\t" . ltrim( $message, '[ x]' );
+}
+
 $blockers = $warnings = $notes = [];
 foreach ( $found_issues as $filename => $issues ) {
 	foreach ( $issues as $line => $line_issues ) {
 		foreach( $line_issues as $issue ) {
+		    $output = render_line( $filename, $line, $issue['message'] );
+
 			if ( 'ERROR' === $issue['level'] ) {
-				$blockers[] = '* ' . $filename . "#L" . $line . ' : ' . ltrim( $issue['message'], '[ x]' );
+				$blockers[] = $output;
 			} else if ( 'WARNING' === $issue['level'] ) {
-				$warnings[] = '* ' . $filename . "#L" . $line . ' : ' . ltrim( $issue['message'], '[ x]' );
+				$warnings[] = $output;
 			} else if ( 'NOTE' === $issue['level'] ) {
-				$notes[] = '* ' . $filename . "#L" . $line . ' : ' . ltrim( $issue['message'], '[ x]' );
+				$notes[] = $output;
 			}
 		}
 	}
@@ -102,9 +108,9 @@ function echo_chapter( $title, $items ) {
         return;
     }
 
-	echo "### " . $title . PHP_EOL . PHP_EOL;
+	echo "\033[1m\033[96m### " . $title . "\033[0m" . PHP_EOL . PHP_EOL;
 	foreach ( $items as $item ) {
-		echo $item . PHP_EOL;
+		echo "\033[36m" . $item . "\033[0m" . PHP_EOL;
 	}
 
 	echo PHP_EOL;

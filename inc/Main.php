@@ -2,8 +2,9 @@
 
 namespace PHPCSDiff;
 
-use PHPCSDiff\Backends\Subversion;
+use PHPCSDiff\Backends\BackendInterface;
 use PHPCSDiff\Log\LoggerInterface;
+use PHPCSDiff\ResultParser\ResultParser;
 
 class Main {
 
@@ -11,7 +12,7 @@ class Main {
 	public $phpcs_command = 'phpcs'; // You might need to provde a path to phpcs.phar file.
 	public $standards_location = '~/PHP_CodeSniffer/Standards';
 
-	/** @var Subversion */
+	/** @var BackendInterface */
 	public $version_control;
 
 	public $allowed_extensions;
@@ -185,16 +186,8 @@ class Main {
 	}
 
 	private function parse_phpcs_results( $phpcs_results ) {
-		$issues = array();
-		if ( preg_match_all( '/^[\s\t]+(\d+)\s\|[\s\t]+([A-Z]+)[\s|\t]+\|[\s\t]+(.*)$/m', $phpcs_results, $matches, PREG_SET_ORDER ) ) {
-			foreach( $matches as $match ) {
-				$line = $match[1];
-				$issues[$line][] = array(
-					'level' => $match[2],
-					'message' => $match[3],
-				);
-			}
-		}
+		$parser = new ResultParser();
+		$issues = $parser->parse( $phpcs_results );
 		return $issues;
 	}
 
