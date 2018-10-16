@@ -14,12 +14,17 @@ Domain Path: /languages
 
 require_once 'vendor/autoload.php';
 
-if ( false === defined( 'PHPCS_DIFF_PLUGIN_DIR' ) ) {
+if ( ! defined( 'PHPCS_DIFF_PLUGIN_DIR' ) ) {
 	define( 'PHPCS_DIFF_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 }
 
-define( 'PHPCS_DIFF_COMMAND', PHPCS_DIFF_PLUGIN_DIR . 'vendor/bin/phpcs' );
-define( 'PHPCS_DIFF_STANDARDS', PHPCS_DIFF_PLUGIN_DIR . 'vendor/wp-coding-standards/wpcs' );
+if( ! defined( 'PHPCS_DIFF_COMMAND' ) ) {
+	define( 'PHPCS_DIFF_COMMAND', PHPCS_DIFF_PLUGIN_DIR . 'vendor/bin/phpcs' );
+}
+
+if( ! defined( 'PHPCS_DIFF_STANDARDS' ) ) {
+	define( 'PHPCS_DIFF_STANDARDS', PHPCS_DIFF_PLUGIN_DIR . 'standards' );
+}
 
 // Load the command only if we're running WordPress via WP CLI.
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
