@@ -68,7 +68,13 @@ class Git implements BackendInterface {
 			$arg_ignore_whitespace = '';
 		}
 
-		$command = "git diff $arg_git_dir $arg_ignore_whitespace $start_commit $end_commit";
+		// It is very important that we get chunks without any extra context, that means every few changes separated
+		// by one or more unchanged lines will be identified as a separate chunk.
+		//
+		// Otherwise, the algorithm in ChunkBuilder::process_chunk() will not work properly.
+		//
+		// This is why we use the --unified=0 argument.
+		$command = "git diff --unified=0 $arg_git_dir $arg_ignore_whitespace $start_commit $end_commit";
 
 		$this->log->log( LoggerInterface::INFO, 'Generating a git diff between the selected commits: ' . $command );
 		$diff = shell_exec( $command );

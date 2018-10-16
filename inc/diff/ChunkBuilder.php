@@ -25,6 +25,10 @@ class ChunkBuilder {
 
 
 	/**
+	 * Turn a chunk into set of line information.
+	 *
+	 * Note that this algorithm can only process chunks which have no unchanged lines in them (no context).
+	 *
 	 * @param Chunk $chunk
 	 *
 	 * @return LineInterface[]
