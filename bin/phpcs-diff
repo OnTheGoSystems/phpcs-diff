@@ -18,7 +18,7 @@ define( 'PHPCS_DIFF_COMMAND', PHPCS_DIFF_PLUGIN_DIR . '/vendor/bin/phpcs' );
 define( 'PHPCS_DIFF_STANDARDS', PHPCS_DIFF_PLUGIN_DIR . '/vendor/wp-coding-standards/wpcs' );
 
 
-require_once 'vendor/autoload.php';
+require_once PHPCS_DIFF_PLUGIN_DIR . '/vendor/autoload.php';
 
 $getopt = new \GetOpt\GetOpt(
 	[
