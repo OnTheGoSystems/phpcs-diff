@@ -90,14 +90,10 @@ class Main {
 		$diff = str_replace( "\r", "\n", $diff );
 		$diff = str_replace( "\r\n", "\n", $diff );
 		if ( false === $this->no_diff_to_big && strlen( $diff ) > 25000000 ) {
-			$error = new \WP_Error( 'diff-too-big', 'The Diff is too big to parse' );
-//			if ( true !== $this->nocache ) {
-//				//wp_cache_set( $cache_key, $error, $cache_group, 3*HOUR_IN_SECONDS );
-//			}
-			return $error;
+			throw new \RuntimeException( 'The Diff is too big to parse' );
 		}
 		if ( true === empty( $diff ) ) {
-			return new \WP_Error( 'diff_parsing_error', 'Error parsing diff.' );
+			throw new \RuntimeException( 'Error parsing diff.' );
 		}
 
 		$diff_info	  = $this->version_control->parse_diff_for_info( $diff );
@@ -124,10 +120,6 @@ class Main {
 				$found_issues_count += count( $processed_file );
 			}
 		}
-
-//		if ( true !== $this->nocache ) {
-//			//wp_cache_set( $cache_key, $found_issues, $cache_group, 3*HOUR_IN_SECONDS );
-//		}
 
 		return $found_issues;
 

@@ -17,8 +17,18 @@ define( 'PHPCS_DIFF_PLUGIN_DIR', dirname( dirname( __FILE__ ) ) );
 define( 'PHPCS_DIFF_COMMAND', PHPCS_DIFF_PLUGIN_DIR . '/vendor/bin/phpcs' );
 define( 'PHPCS_DIFF_STANDARDS', PHPCS_DIFF_PLUGIN_DIR . '/vendor/wp-coding-standards/wpcs' );
 
+const OUTPUT_BOLD = "\033[1m";
+const OUTPUT_UNBOLD = "\033[21m";
+const COLOR_PRIMARY = "\033[94m";
+const COLOR_SECONDARY = "\033[93m";
+const OUTPUT_REVERSE = "\033[7m";
+const OUTPUT_UNREVERSE = "\033[27m";
+const OUTPUT_RESET = "\033[0m";
+const OUTPUT_UNDERLINED = "\033[4m";
+const OUTPUT_UNUNDERLINED = "\033[24m";
+
 $logo = file_get_contents( PHPCS_DIFF_PLUGIN_DIR . '/logo' );
-echo "\n$logo\n";
+echo "\n$logo\n" . OUTPUT_UNDERLINED . COLOR_SECONDARY . 'https://github.com/zaantar/phpcs-diff' . OUTPUT_RESET . "\n\n";
 
 require_once PHPCS_DIFF_PLUGIN_DIR . '/vendor/autoload.php';
 
@@ -74,22 +84,14 @@ try {
 } catch ( \Exception $e ) {
 	$logger->log(
 		LoggerInterface::ERROR,
-		"Uncaught exception when processing the repository: \n\n"
-		. $e->getMessage()
-		. ' in ' . $e->getFile() . ' on line ' . $e->getLine() . "\n"
+		'Uncaught exception when processing the repository in ' . $e->getFile() . ' on line ' . $e->getLine() . PHP_EOL
+		. $e->getMessage() . PHP_EOL
 		. 'Trace: ' . $e->getTraceAsString()
 	);
 
 	return 1;
 }
 
-const OUTPUT_BOLD = "\033[1m";
-const OUTPUT_UNBOLD = "\033[21m";
-const COLOR_PRIMARY = "\033[94m";
-const COLOR_SECONDARY = "\033[93m";
-const OUTPUT_REVERSE = "\033[7m";
-const OUTPUT_UNREVERSE = "\033[27m";
-const OUTPUT_RESET = "\033[0m";
 
 function render_line( $filename, $line, $column, $message, $source ) {
     return OUTPUT_BOLD . COLOR_PRIMARY . "* " . $filename . ":" . $line . ':' . $column . OUTPUT_UNBOLD . PHP_EOL
