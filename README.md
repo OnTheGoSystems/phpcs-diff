@@ -43,6 +43,8 @@ The script will print found issues and set an exit code if any issues not ignore
 
 # As a wp-cli command
 
+This repository is also a WordPress plugin that, when activated, provides a WP-CLI command `phpcs-diff`.
+
 ## Pre-requisities
 
 Along a working [WordPress](wordpress.org) installation you'll need a [WP CLI](wp-cli.org) installed since you can interact with the plugin via WP CLI only for now.
@@ -55,15 +57,13 @@ Along a working [WordPress](wordpress.org) installation you'll need a [WP CLI](w
 
 ## Usage
 
-# Running the WP CLI command
-
 Example command run:
 
 ```bash
-wp phpcs-diff --vcs="git" --repo="hello-dolly" --start_revision=99998 --end_revision=100000
+wp phpcs-diff --vcs="svn" --repo="hello-dolly" --start_revision=99998 --end_revision=100000
 ```
 
-For more params of the command, please, see the code directly: https://github.com/Automattic/phpcs-diff/blob/master/wp-cli-command.php#L12
+For more params of the command, please, run `wp help phpcs-diff` or [check the inline documentation directly](https://github.com/zaantar/phpcs-diff/blob/master/wp-cli-command.php#L17).
 
 ## Configuration
 
