@@ -21,13 +21,13 @@ class ResultParser {
 			|| ! array_key_exists( 'files', $phpcs_json )
 			|| ! is_array( $phpcs_json['files'] )
 		) {
-			throw new \RuntimeException( 'Unable to parse the phpcs output.' );
+			throw new \RuntimeException( 'Unable to parse the phpcs output: ' . $raw_phpcs_output );
 		}
 
 		$file = array_pop( $phpcs_json['files'] );
 
 		if( ! array_key_exists( 'messages', $file ) || ! is_array( $file['messages'] ) ) {
-			throw new \RuntimeException( 'Unable to parse the phpcs output.' );
+			throw new \RuntimeException( 'Unable to parse the phpcs output: ' . $raw_phpcs_output );
 		}
 
 		$output = [];
@@ -43,6 +43,7 @@ class ResultParser {
 				'message' => $message['message'],
 				'source' => $message['source'],
 				'column' => $message['column'],
+				'severity' => $message['severity'],
 			];
 		}
 
