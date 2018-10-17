@@ -15,7 +15,7 @@ use PHPCSDiff\Log\LoggerInterface;
 
 define( 'PHPCS_DIFF_PLUGIN_DIR', dirname( dirname( __FILE__ ) ) );
 define( 'PHPCS_DIFF_COMMAND', PHPCS_DIFF_PLUGIN_DIR . '/vendor/bin/phpcs' );
-define( 'PHPCS_DIFF_STANDARDS', PHPCS_DIFF_PLUGIN_DIR . '/vendor/wp-coding-standards/wpcs' );
+define( 'PHPCS_DIFF_STANDARDS', PHPCS_DIFF_PLUGIN_DIR . '/standards' );
 
 const OUTPUT_BOLD = "\033[1m";
 const OUTPUT_UNBOLD = "\033[21m";

@@ -62,9 +62,7 @@ class Main {
 	}
 
 	public function set_phpcs_standard( $standard ) {
-		if ( true === in_array( $standard, array( 'WordPress', 'WordPress-VIP', 'WordPressVIPminimum' ), true ) ) {
-			$this->phpcs_standard = $standard;
-		}
+		$this->phpcs_standard = $standard;
 	}
 
 	public function set_excluded_extensions( $excluded_exts ) {
