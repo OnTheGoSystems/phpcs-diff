@@ -4,4 +4,28 @@
 
     <autoload>./../WordPress/PHPCSAliases.php</autoload>
 
+    <rule ref="WordPress"/>
+
+    <!--
+        LOWERING PRIORITY
+    -->
+
+    <rule ref="Squiz.PHP.DisallowMultipleAssignments">
+        <type>warning</type>
+    </rule>
+
+    <!-- Not every parameter needs a comment, sometimes things are obvious. -->
+    <rule ref="Squiz.Commenting.FunctionComment.MissingParamComment">
+        <type>warning</type>
+    </rule>
+
+    <!--
+        EXCLUSIONS
+    -->
+
+    <!-- We allow this: if( $var = something() ) { ... -->
+    <rule ref="WordPress.CodeAnalysis.AssignmentInCondition.Found">
+        <severity>0</severity>
+    </rule>
+
 </ruleset>
