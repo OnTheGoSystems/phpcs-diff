@@ -4,6 +4,7 @@ namespace PHPCSDiff;
 
 use PHPCSDiff\Backends\BackendInterface;
 use PHPCSDiff\Log\LoggerInterface;
+use PHPCSDiff\ResultParser\LineMapping;
 use PHPCSDiff\ResultParser\ResultParser;
 
 class Main {
@@ -18,8 +19,6 @@ class Main {
 	public $allowed_extensions;
 
 	public $excluded_extensions = array();
-
-	public $lines_mapping;
 
 	private $phpcs_standard = 'WordPress';
 
@@ -101,16 +100,21 @@ class Main {
 		$found_issues_count = 0;
 		foreach( $file_diffs as $filename => $file_info ) {
 			if ( true === array_key_exists( 'lines_added', $file_info ) && $file_info['lines_added'] > 0 ) {
-				$lines_mapping = $this->count_lines( $file_info['lines'] );
-				if ( false === $lines_mapping ) {
+				$line_mapping = new LineMapping();
+				$line_mapping->count_lines( $file_info['lines'] );
+				if ( ! $line_mapping->has_actionable_changes() ) {
 					continue;
 				}
+
 				if ( true === array_key_exists( 'is_new_file', $file_info ) && true === $file_info['is_new_file'] ) {
 					$is_new_file = true;
 				} else {
 					$is_new_file = false;
 				}
-				$processed_file = $this->process_file( $directory . '/' . $filename, $oldest_rev, $newest_rev, $is_new_file );
+				$processed_file = $this->process_file(
+					$directory . '/' . $filename, $oldest_rev, $newest_rev, $is_new_file, $line_mapping
+				);
+
 				if ( false === $processed_file || true === empty( $processed_file ) ) {
 					continue;
 				}
@@ -123,7 +127,7 @@ class Main {
 
 	}
 
-	private function process_file( $filename, $oldest_rev, $newest_rev, $is_new_file ) {
+	private function process_file( $filename, $oldest_rev, $newest_rev, $is_new_file, LineMapping $line_mapping ) {
 
 		$file_extension = pathinfo( $filename, PATHINFO_EXTENSION );
 
@@ -151,7 +155,7 @@ class Main {
 			return $this->parse_phpcs_results( $results_for_newest_rev );
 		}
 
-		return $this->diff_results_for_two_revs( $results_for_newest_rev, $results_for_oldest_rev );
+		return $this->diff_results_for_two_revs( $results_for_newest_rev, $results_for_oldest_rev, $line_mapping );
 	}
 
 	// @todo: figure out how to prevent wrong file extension error - it's not that urgent since it is present in both diffs, but still.
@@ -166,62 +170,40 @@ class Main {
 		return $issues;
 	}
 
-	private function diff_results_for_two_revs( $new_rev_results, $old_rev_results ) {
+	private function diff_results_for_two_revs( $new_rev_results, $old_rev_results, LineMapping $line_mapping ) {
 
 		$new_rev_results = $this->parse_phpcs_results( $new_rev_results );
 		$old_rev_results = $this->parse_phpcs_results( $old_rev_results );
 
-		$lines_mapping = array_reverse( $this->lines_mapping, true );
-		foreach( $old_rev_results as $line_no => $line ) {
-			$lines_offset = 0;
-			foreach( $lines_mapping as $old_line_no => $new_line_no ) {
-				if ( $line_no >= $old_line_no ) {
-					if ( $old_line_no < $new_line_no ) {
-						$lines_offset += ( $new_line_no - $old_line_no );
-						break;
-					} else if ( $old_line_no > $new_line_no ) {
-						$lines_offset += ( $new_line_no - $old_line_no );
-						break;
-					} else if ( $old_line_no === $new_line_no ) {
-						$lines_offset = 0;
-						break;
-					}
-				}
+		$last_old_line_number = max( array_keys( $old_rev_results ) );
+		$line_mapping->build_mapping( $last_old_line_number );
+
+		// Go through the results from the OLD revision, detect results that are same in the old and new,
+		// and then REMOVE them from the NEW revision.
+		foreach( $old_rev_results as $current_line_number => $old_line_results ) {
+			$new_line_number = $line_mapping->old_line_number_to_new( $current_line_number );
+
+			if( LineMapping::NO_MAPPING === $new_line_number ) {
+				// The line has been deleted in the new version of the file, there will be nothing to remove
+				// from the new revision results.
+				continue;
 			}
 
-			foreach( $line as $old_issue ) {
-				$new_line_no = $line_no + $lines_offset;
-				if ( true === array_key_exists( $new_line_no, $new_rev_results ) ) {
-					foreach( $new_rev_results[$new_line_no] as $new_issue ) {
+			// Remove (only matching) issues from the new revision results.
+			foreach( $old_line_results as $old_issue ) {
+				if ( true === array_key_exists( $new_line_number, $new_rev_results ) ) {
+					foreach( $new_rev_results[ $new_line_number ] as $new_issue ) {
 						if( $new_issue === $old_issue ) {
-							unset( $new_rev_results[$new_line_no] );
+							unset( $new_rev_results[ $new_line_number ] );
 						}
 					}
 				}
 			}
-
 		}
 
 		return $new_rev_results;
 	}
 
-	private function count_lines( $lines ) {
-		$lines_added = $lines_removed = $lines_mapping = array();
-		foreach( $lines as $line ) {
-			if ( true === $line['is_added'] ) {
-				$lines_added[] = intval( $line['new_line_number'] );
-			} else if ( true === $line['is_removed'] ) {
-				$lines_removed[] = intval( $line['old_line_number'] );
-			} else if ( true === $line['is_context'] ) {
-				$lines_mapping[ intval( $line['old_line_number'] ) ] = intval( $line['new_line_number'] );
-			}
-		}
-		if ( true === empty( $lines_added ) ) {
-			return false;
-		}
-		$this->lines_mapping = $lines_mapping;
-		return true;
-	}
 
 	private function stop_the_insanity() {
 		if( ! defined( 'ABSPATH' ) ) {
