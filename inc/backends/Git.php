@@ -144,7 +144,7 @@ class Git implements BackendInterface {
 		) );
 
 		$git_command = sprintf(
-			'git show --format=raw \'%s:%s\'',
+			'git show --format=raw %s:%s',
 			$revision,
 			ltrim( $filename, '/' )
 		);
