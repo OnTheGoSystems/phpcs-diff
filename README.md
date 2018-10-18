@@ -31,6 +31,7 @@ Options:
 - `--tolerance[=<arg>]`: Last level of issues that will be tolerated. Accepted values are blockers | warnings | notes | none.     
 - `--standard[=<arg>]`: Name of the phpcs standard to use: 'WordPress', 'WordPress-VIP', 'WordPress-Core', 'WordPress-Docs', 'WordPress-Extra', 'Toolset'
 - `--log_level[=<arg>]`: Control verbosity by passing a number from 0 (most verbose) to 2 (least verbose, only errors).
+- `--ignore_space_changes`: Whitespace changes will be ignored when git is used to produce the diff.
 
 Limitations:
 

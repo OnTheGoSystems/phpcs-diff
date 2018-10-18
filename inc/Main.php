@@ -81,7 +81,7 @@ class Main {
 			}
 		}
 
-		$diff  = trim( $this->version_control->get_diff( $directory, $newest_rev, $oldest_rev, array( 'ignore-space-change' => true ) ) );
+		$diff  = trim( $this->version_control->get_diff( $directory, $newest_rev, $oldest_rev, [] ) );
 
 		$this->stop_the_insanity();
 
@@ -156,22 +156,7 @@ class Main {
 
 	// @todo: figure out how to prevent wrong file extension error - it's not that urgent since it is present in both diffs, but still.
 	private function run_phpcs_for_file_revision( $filename, $revision ) {
-		//$cache_key	 = 'phpcs_file_rev_' . md5( $filename . $revision . $this->phpcs_standard );
-		//$cache_group = 'vip-phpcs';
-		if ( true !== $this->nocache ) {
-			$result	 = false; //wp_cache_get( $cache_key, $cache_group );
-		} else {
-			$result  = false;
-		}
-
-		if ( false === $result ) {
-
-			$result = $this->version_control->run_phpcs_for_file_at_revision( $filename, $revision, $this->phpcs_command, $this->standards_location, $this->phpcs_standard );
-
-//			if ( true !== $this->nocache ) {
-//				//wp_cache_set( $cache_key, $result, $cache_group, 6*HOUR_IN_SECONDS );
-//			}
-		}
+		$result = $this->version_control->run_phpcs_for_file_at_revision( $filename, $revision, $this->phpcs_command, $this->standards_location, $this->phpcs_standard );
 		return $result;
 	}
 

@@ -39,6 +39,7 @@ $getopt = new \GetOpt\GetOpt(
         [ 't', 'tolerance' ],
         [ 'standard' ],
         [ 'log_level' ],
+        [ 'ignore_space_changes' ]
 	]
 );
 
@@ -61,6 +62,9 @@ $getopt->getOption( 'log_level', true )
 	->setValidation( 'is_numeric' )
 	->setDefaultValue( LoggerInterface::WARNING );
 
+$getopt->getOption( 'ignore_space_changes', true )
+    ->setMode( \GetOpt\GetOpt::NO_ARGUMENT );
+
 try {
 	$getopt->process();
 } catch ( \GetOpt\ArgumentException $exception ) {
@@ -73,10 +77,12 @@ $start_revision = $getopt->getOption( 'start_revision' );
 $end_revision = $getopt->getOption( 'end_revision' );
 $phpcs_standard = $getopt->getOption( 'standard' );
 $log_level = $getopt->getOption( 'log_level' );
+$ignore_space_changes = $getopt->offsetExists( 'ignore_space_changes' );
 
 $logger = new Log\ShellLogger( (int) $log_level );
-$version_control = new Backends\Git( '', $logger );
-$controller = new Main( $version_control, $logger );
+$options = [ 'ignore-space-change' => $ignore_space_changes ];
+$version_control = new Backends\Git( '', $logger, $options );
+$controller = new Main( $version_control, $logger, $options );
 $controller->set_phpcs_standard( $phpcs_standard );
 
 try {
