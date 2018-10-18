@@ -28,4 +28,13 @@
         <severity>0</severity>
     </rule>
 
+    <!-- We hate multiple statement alignments. -->
+    <!-- TODO check for the correct way of alignment -->
+    <rule ref="Generic.Formatting.MultipleStatementAlignment.NotSameWarning">
+        <severity>0</severity>
+    </rule>
+    <rule ref="WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned">
+        <severity>0</severity>
+    </rule>
+
 </ruleset>
