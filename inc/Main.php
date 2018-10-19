@@ -99,28 +99,23 @@ class Main {
 		$found_issues = array();
 		$found_issues_count = 0;
 		foreach( $file_diffs as $filename => $file_info ) {
-			if ( true === array_key_exists( 'lines_added', $file_info ) && $file_info['lines_added'] > 0 ) {
-				$line_mapping = new LineMapping();
-				$line_mapping->count_lines( $file_info['lines'] );
-				if ( ! $line_mapping->has_actionable_changes() ) {
-					continue;
-				}
-
-				if ( true === array_key_exists( 'is_new_file', $file_info ) && true === $file_info['is_new_file'] ) {
-					$is_new_file = true;
-				} else {
-					$is_new_file = false;
-				}
-				$processed_file = $this->process_file(
-					$directory . '/' . $filename, $oldest_rev, $newest_rev, $is_new_file, $line_mapping
-				);
-
-				if ( false === $processed_file || true === empty( $processed_file ) ) {
-					continue;
-				}
-				$found_issues[$filename] = $processed_file;
-				$found_issues_count += count( $processed_file );
+			$line_mapping = new LineMapping();
+			$line_mapping->count_lines( $file_info['lines'] );
+			if ( ! $line_mapping->has_actionable_changes() ) {
+				continue;
 			}
+
+			$is_new_file = ( array_key_exists( 'is_new_file', $file_info ) && true === $file_info['is_new_file'] );
+
+			$processed_file = $this->process_file(
+				$directory . '/' . $filename, $oldest_rev, $newest_rev, $is_new_file, $line_mapping
+			);
+
+			if ( false === $processed_file || empty( $processed_file ) ) {
+				continue;
+			}
+			$found_issues[ $filename ] = $processed_file;
+			$found_issues_count += count( $processed_file );
 		}
 
 		return $found_issues;
