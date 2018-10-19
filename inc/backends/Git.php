@@ -23,6 +23,9 @@ class Git implements BackendInterface {
 	/** @var string This is how the unified diff annotates files that didn't exist at a particular revision. */
 	const DEV_NULL = '/dev/null';
 
+	/** @var string Represents unstaged changes in the working directory. */
+	const UNSTAGED = '*UNSTAGED*';
+
 	/** @var LoggerInterface */
 	private $log;
 
@@ -68,11 +71,15 @@ class Git implements BackendInterface {
 			$arg_ignore_whitespace = '';
 		}
 
+		if( self::UNSTAGED === $end_commit ) {
+			return $this->get_diff_for_unstaged_changes( "$arg_git_dir $arg_ignore_whitespace", $start_commit );
+		}
+
 		// Check if we're comparing the the same commit and show a message about it.
 		//
 		// We need to use git rev-parse in case a branch name or HEAD are provided.
-		$start_commit_hash = shell_exec( "git $arg_git_dir rev-parse $start_commit" );
-		$end_commit_hash = shell_exec( "git $arg_git_dir rev-parse $end_commit" );
+		$start_commit_hash = trim( shell_exec( "git $arg_git_dir rev-parse $start_commit" ) );
+		$end_commit_hash = trim( shell_exec( "git $arg_git_dir rev-parse $end_commit" ) );
 		if( $start_commit_hash === $end_commit_hash ) {
 			$this->log->log( LoggerInterface::ERROR, "Attempting to compare a commit $start_commit_hash with itself. Expect an empty result." );
 		}
@@ -88,6 +95,24 @@ class Git implements BackendInterface {
 		$this->log->log( LoggerInterface::INFO, 'Generating a git diff between the selected commits: ' . $command );
 		$diff = shell_exec( $command );
 
+		return $diff;
+	}
+
+
+	/**
+	 * Get a diff between a selected commit and unstaged changes.
+	 *
+	 * @param string $git_args
+	 * @param string $start_commit Revision number to diff against.
+	 *
+	 * @return string
+	 */
+	private function get_diff_for_unstaged_changes( $git_args, $start_commit ) {
+		$command = "git diff --unified=0 $git_args $start_commit";
+
+		$this->log->log( LoggerInterface::INFO, 'Generating a diff between unstaged changes and the selected commit: ' . $command );
+
+		$diff = shell_exec( $command );
 		return $diff;
 	}
 
@@ -152,11 +177,17 @@ class Git implements BackendInterface {
 			$filename, $revision
 		) );
 
-		$git_command = sprintf(
-			'git show --format=raw %s:%s',
-			$revision,
-			ltrim( $filename, '/' )
-		);
+		if( self::UNSTAGED === $revision ) {
+			// Inspecting an unstaged file - just take it from the filesystem directly.
+			$get_file_command = 'cat ' . ltrim( $filename, '/' );
+		} else {
+			// Get the content of the file at a particular commit.
+			$get_file_command = sprintf(
+				'git show --format=raw %s:%s',
+				$revision,
+				ltrim( $filename, '/' )
+			);
+		}
 
 		$phpcs_command = sprintf(
 			'%s --report=json --runtime-set installed_paths %s --standard=%s --stdin-path=%s -',
@@ -166,7 +197,7 @@ class Git implements BackendInterface {
 			escapeshellarg( $filename )
 		);
 
-		$command_string = "$git_command | $phpcs_command";
+		$command_string = "$get_file_command | $phpcs_command";
 
 		return shell_exec( $command_string );
 	}

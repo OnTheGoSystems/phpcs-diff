@@ -39,7 +39,8 @@ $getopt = new \GetOpt\GetOpt(
         [ 't', 'tolerance' ],
         [ 'standard' ],
         [ 'log_level' ],
-        [ 'ignore_space_changes' ]
+        [ 'ignore_space_changes', \GetOpt\GetOpt::NO_ARGUMENT ],
+        [ 'sniff_unstaged', \GetOpt\GetOpt::NO_ARGUMENT ],
 	]
 );
 
@@ -62,9 +63,6 @@ $getopt->getOption( 'log_level', true )
 	->setValidation( 'is_numeric' )
 	->setDefaultValue( LoggerInterface::WARNING );
 
-$getopt->getOption( 'ignore_space_changes', true )
-    ->setMode( \GetOpt\GetOpt::NO_ARGUMENT );
-
 try {
 	$getopt->process();
 } catch ( \GetOpt\ArgumentException $exception ) {
@@ -78,6 +76,12 @@ $end_revision = $getopt->getOption( 'end_revision' );
 $phpcs_standard = $getopt->getOption( 'standard' );
 $log_level = $getopt->getOption( 'log_level' );
 $ignore_space_changes = $getopt->offsetExists( 'ignore_space_changes' );
+
+$sniff_unstaged = $getopt->offsetExists( 'sniff_unstaged' );
+if( $sniff_unstaged ) {
+    $start_revision = 'HEAD';
+    $end_revision = Backends\Git::UNSTAGED;
+}
 
 $logger = new Log\ShellLogger( (int) $log_level );
 $options = [ 'ignore-space-change' => $ignore_space_changes ];

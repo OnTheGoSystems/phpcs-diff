@@ -32,6 +32,7 @@ Options:
 - `--standard[=<arg>]`: Name of the phpcs standard to use: 'WordPress', 'WordPress-VIP', 'WordPress-Core', 'WordPress-Docs', 'WordPress-Extra', 'Toolset'
 - `--log_level[=<arg>]`: Control verbosity by passing a number from 0 (most verbose) to 2 (least verbose, only errors).
 - `--ignore_space_changes`: Whitespace changes will be ignored when git is used to produce the diff.
+- `--sniff_unstaged`: Inspect unstaged changes in the working directory against the latest commit (HEAD). `--start_revision` and `--end_revision` will be ignored in this case.
 
 Limitations:
 
