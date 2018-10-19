@@ -41,6 +41,7 @@ $getopt = new \GetOpt\GetOpt(
         [ 'log_level' ],
         [ 'ignore_space_changes', \GetOpt\GetOpt::NO_ARGUMENT ],
         [ 'sniff_unstaged', \GetOpt\GetOpt::NO_ARGUMENT ],
+        [ 'no_colours', \GetOpt\GetOpt::NO_ARGUMENT ],
 	]
 );
 
@@ -76,11 +77,22 @@ $end_revision = $getopt->getOption( 'end_revision' );
 $phpcs_standard = $getopt->getOption( 'standard' );
 $log_level = $getopt->getOption( 'log_level' );
 $ignore_space_changes = $getopt->offsetExists( 'ignore_space_changes' );
+$no_colours = $getopt->offsetExists( 'no_colours' );
 
 $sniff_unstaged = $getopt->offsetExists( 'sniff_unstaged' );
 if( $sniff_unstaged ) {
     $start_revision = 'HEAD';
     $end_revision = Backends\Git::UNSTAGED;
+}
+
+global $colour_primary, $colour_secondary;
+
+if( $no_colours ) {
+	$colour_primary = '';
+	$colour_secondary = '';
+} else {
+    $colour_primary = COLOR_PRIMARY;
+    $colour_secondary = COLOR_SECONDARY;
 }
 
 $logger = new Log\ShellLogger( (int) $log_level );
@@ -104,9 +116,10 @@ try {
 
 
 function render_line( $filename, $line, $column, $message, $source ) {
-    return OUTPUT_BOLD . COLOR_PRIMARY . "* " . $filename . ":" . $line . ':' . $column . OUTPUT_UNBOLD . PHP_EOL
+	global $colour_primary, $colour_secondary;
+    return OUTPUT_BOLD . $colour_primary . "* " . $filename . ":" . $line . ':' . $column . OUTPUT_UNBOLD . PHP_EOL
         . "\t" . $source . ": " . PHP_EOL
-        . "\t" . COLOR_SECONDARY . $message . OUTPUT_RESET;
+        . "\t" . $colour_secondary . $message . OUTPUT_RESET;
 }
 
 $blockers = $warnings = $notes = [];
@@ -127,11 +140,13 @@ foreach ( $found_issues as $filename => $issues ) {
 }
 
 function echo_chapter( $title, $items ) {
+	global $colour_primary;
+
     if( empty( $items ) ) {
         return;
     }
 
-	echo OUTPUT_REVERSE . OUTPUT_BOLD . COLOR_PRIMARY . "### " . $title . OUTPUT_RESET . PHP_EOL . PHP_EOL;
+	echo OUTPUT_REVERSE . OUTPUT_BOLD . $colour_primary . "### " . $title . OUTPUT_RESET . PHP_EOL . PHP_EOL;
 	foreach ( $items as $item ) {
 		echo $item . PHP_EOL;
 	}
