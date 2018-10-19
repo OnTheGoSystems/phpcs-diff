@@ -68,6 +68,15 @@ class Git implements BackendInterface {
 			$arg_ignore_whitespace = '';
 		}
 
+		// Check if we're comparing the the same commit and show a message about it.
+		//
+		// We need to use git rev-parse in case a branch name or HEAD are provided.
+		$start_commit_hash = shell_exec( "git $arg_git_dir rev-parse $start_commit" );
+		$end_commit_hash = shell_exec( "git $arg_git_dir rev-parse $end_commit" );
+		if( $start_commit_hash === $end_commit_hash ) {
+			$this->log->log( LoggerInterface::ERROR, "Attempting to compare a commit $start_commit_hash with itself. Expect an empty result." );
+		}
+
 		// It is very important that we get chunks without any extra context, that means every few changes separated
 		// by one or more unchanged lines will be identified as a separate chunk.
 		//
