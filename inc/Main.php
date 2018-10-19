@@ -90,7 +90,7 @@ class Main {
 			throw new \RuntimeException( 'The Diff is too big to parse' );
 		}
 		if ( true === empty( $diff ) ) {
-			throw new \RuntimeException( 'Error parsing diff.' );
+			throw new \RuntimeException( 'Error parsing diff - it\'s empty.' );
 		}
 
 		$diff_info	  = $this->version_control->parse_diff_for_info( $diff );

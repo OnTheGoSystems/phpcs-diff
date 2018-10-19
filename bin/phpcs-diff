@@ -95,7 +95,7 @@ try {
 		. 'Trace: ' . $e->getTraceAsString()
 	);
 
-	return 1;
+	exit(1);
 }
 
 
