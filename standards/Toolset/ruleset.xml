@@ -5,6 +5,7 @@
     <autoload>./../WordPress/PHPCSAliases.php</autoload>
 
     <rule ref="WordPress"/>
+    <rule ref="VariableAnalysis" />
 
     <!--
         LOWERING PRIORITY

@@ -57,7 +57,9 @@ $getopt->getOption( 'tolerance', true )
 $getopt->getOption( 'standard', true )
 	->setMode( \GetOpt\GetOpt::OPTIONAL_ARGUMENT )
 	->setValidation( function( $value ) {
-		return in_array( $value, [ 'WordPress', 'WordPress-VIP', 'WordPress-Core', 'WordPress-Docs', 'WordPress-Extra', 'Toolset' ] );
+		return in_array( $value, [
+		        'WordPress', 'WordPress-VIP', 'WordPress-Core', 'WordPress-Docs', 'WordPress-Extra', 'Toolset', 'VariableAnalysis'
+        ] );
 	} );
 
 $getopt->getOption( 'log_level', true )

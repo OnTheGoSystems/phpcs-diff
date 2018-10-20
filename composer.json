@@ -19,7 +19,8 @@
     "dealerdirect/phpcodesniffer-composer-installer": "^0.4.4",
     "sebastian/diff": "^3.0",
     "ulrichsg/getopt-php": "^3.0",
-    "slowprog/composer-copy-file": "~0.2"
+    "slowprog/composer-copy-file": "~0.2",
+    "sirbrillig/phpcs-variable-analysis": "^2.1"
   },
   "scripts": {
     "post-install-cmd": [
@@ -43,7 +44,8 @@
       "vendor/wp-coding-standards/wpcs/WordPress-Core": "standards/WordPress-Core",
       "vendor/wp-coding-standards/wpcs/WordPress-Docs": "standards/WordPress-Docs",
       "vendor/wp-coding-standards/wpcs/WordPress-Extra": "standards/WordPress-Extra",
-      "vendor/wp-coding-standards/wpcs/WordPress-VIP": "standards/WordPress-VIP"
+      "vendor/wp-coding-standards/wpcs/WordPress-VIP": "standards/WordPress-VIP",
+      "vendor/sirbrillig/phpcs-variable-analysis/VariableAnalysis": "standards/VariableAnalysis"
     }
   }
 }
