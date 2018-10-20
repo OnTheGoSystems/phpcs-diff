@@ -19,8 +19,8 @@ define( 'PHPCS_DIFF_STANDARDS', PHPCS_DIFF_PLUGIN_DIR . '/standards' );
 
 const OUTPUT_BOLD = "\033[1m";
 const OUTPUT_UNBOLD = "\033[21m";
-const COLOR_PRIMARY = "\033[94m";
-const COLOR_SECONDARY = "\033[93m";
+const COLOUR_PRIMARY = "\033[94m";
+const COLOUR_SECONDARY = "\033[93m";
 const OUTPUT_REVERSE = "\033[7m";
 const OUTPUT_UNREVERSE = "\033[27m";
 const OUTPUT_RESET = "\033[0m";
@@ -28,7 +28,7 @@ const OUTPUT_UNDERLINED = "\033[4m";
 const OUTPUT_UNUNDERLINED = "\033[24m";
 
 $logo = file_get_contents( PHPCS_DIFF_PLUGIN_DIR . '/logo' );
-echo "\n$logo\n" . OUTPUT_UNDERLINED . COLOR_SECONDARY . 'https://github.com/zaantar/phpcs-diff' . OUTPUT_RESET . "\n\n";
+echo "\n$logo\n" . OUTPUT_UNDERLINED . COLOUR_SECONDARY . 'https://github.com/zaantar/phpcs-diff' . OUTPUT_RESET . "\n\n";
 
 require_once PHPCS_DIFF_PLUGIN_DIR . '/vendor/autoload.php';
 
@@ -42,6 +42,8 @@ $getopt = new \GetOpt\GetOpt(
         [ 'ignore_space_changes', \GetOpt\GetOpt::NO_ARGUMENT ],
         [ 'sniff_unstaged', \GetOpt\GetOpt::NO_ARGUMENT ],
         [ 'no_colours', \GetOpt\GetOpt::NO_ARGUMENT ],
+        [ 'colour_primary', \GetOpt\GetOpt::REQUIRED_ARGUMENT ],
+        [ 'colour_secondary', \GetOpt\GetOpt::REQUIRED_ARGUMENT ],
 	]
 );
 
@@ -90,8 +92,36 @@ if( $no_colours ) {
 	$colour_primary = '';
 	$colour_secondary = '';
 } else {
-    $colour_primary = COLOR_PRIMARY;
-    $colour_secondary = COLOR_SECONDARY;
+    function arg_to_colour( $arg, $default ) {
+        $arg_to_colour_map = [
+            'default' => "\e[39m",
+            'black' => "\e[30m",
+            'red' => "\e[31m",
+            'green' => "\e[32m",
+            'yellow' => "\e[33m",
+            'blue' => "\e[34m",
+            'magenta' => "\e[35m",
+            'cyan' => "\e[36m",
+            'lightgray' => "\e[37m",
+            'darkgray' => "\e[90m",
+            'lightred' => "\e[91m",
+            'lightgreen' => "\e[92m",
+            'lightyellow' => "\e[93m",
+            'lightblue' => "\e[94m",
+            'lightmagenta' => "\e[95m",
+            'lightcyan' => "\e[96m",
+            'white' => "\e[97m"
+        ];
+
+        if( ! array_key_exists( $arg, $arg_to_colour_map ) ) {
+            return $default;
+        }
+
+        return $arg_to_colour_map[ $arg ];
+    }
+
+    $colour_primary = $getopt->offsetExists( 'colour_primary' ) ? arg_to_colour( $getopt->getOption( 'colour_primary' ), COLOUR_PRIMARY ) : COLOUR_PRIMARY;
+	$colour_secondary = $getopt->offsetExists( 'colour_secondary' ) ? arg_to_colour( $getopt->getOption( 'colour_secondary' ), COLOUR_SECONDARY ) : COLOUR_SECONDARY;
 }
 
 $logger = new Log\ShellLogger( (int) $log_level );
