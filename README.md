@@ -29,7 +29,9 @@ Options:
 - `--start_revision=<arg>`: First (older) revision number/commit hash    
 - `--end_revision=<arg>`: Second (newer) revision number/commit hash    
 - `--tolerance[=<arg>]`: Last level of issues that will be tolerated. Accepted values are blockers | warnings | notes | none.     
-- `--standard[=<arg>]`: Name of the phpcs standard to use: 'WordPress', 'WordPress-VIP', 'WordPress-Core', 'WordPress-Docs', 'WordPress-Extra', 'Toolset'
+- `--standard[=<arg>]`: Name of the phpcs standard to use: 'WordPress', 'WordPress-VIP', 'WordPress-Core', 'WordPress-Docs', 'WordPress-Extra' or 'Toolset'. 
+    If you omit this argument, a [default configuration file](https://github.com/squizlabs/PHP_CodeSniffer/wiki/Advanced-Usage#using-a-default-configuration-file)
+    will be used. 
 - `--log_level[=<arg>]`: Control verbosity by passing a number from 0 (most verbose) to 2 (least verbose, only errors).
 - `--ignore_space_changes`: Whitespace changes will be ignored when git is used to produce the diff.
 - `--sniff_unstaged`: Inspect unstaged changes in the working directory against the latest commit (HEAD). `--start_revision` and `--end_revision` will be ignored in this case.

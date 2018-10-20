@@ -56,8 +56,7 @@ $getopt->getOption( 'standard', true )
 	->setMode( \GetOpt\GetOpt::OPTIONAL_ARGUMENT )
 	->setValidation( function( $value ) {
 		return in_array( $value, [ 'WordPress', 'WordPress-VIP', 'WordPress-Core', 'WordPress-Docs', 'WordPress-Extra', 'Toolset' ] );
-	} )
-	->setDefaultValue( 'WordPress' );
+	} );
 
 $getopt->getOption( 'log_level', true )
 	->setMode( \GetOpt\GetOpt::OPTIONAL_ARGUMENT )

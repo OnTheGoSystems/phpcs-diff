@@ -26,7 +26,12 @@ class ResultParser {
 
 		$file = array_pop( $phpcs_json['files'] );
 
-		if( ! array_key_exists( 'messages', $file ) || ! is_array( $file['messages'] ) ) {
+		if( ! is_array( $file ) || ! array_key_exists( 'messages', $file ) ) {
+			// Happens for perfect code :)
+			return [];
+		}
+
+		if( ! is_array( $file['messages'] ) ) {
 			throw new \RuntimeException( 'Unable to parse the phpcs output: ' . $raw_phpcs_output );
 		}
 

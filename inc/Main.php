@@ -166,9 +166,13 @@ class Main {
 	}
 
 	private function diff_results_for_two_revs( $new_rev_results, $old_rev_results, LineMapping $line_mapping ) {
-
 		$new_rev_results = $this->parse_phpcs_results( $new_rev_results );
 		$old_rev_results = $this->parse_phpcs_results( $old_rev_results );
+
+		if( empty( $old_rev_results ) ) {
+			// Nothing to compare against. All issues in the new revision are new issues.
+			return $new_rev_results;
+		}
 
 		$last_old_line_number = max( array_keys( $old_rev_results ) );
 		$line_mapping->build_mapping( $last_old_line_number );
