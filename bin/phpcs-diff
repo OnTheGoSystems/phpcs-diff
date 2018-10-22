@@ -37,7 +37,7 @@ $getopt = new \GetOpt\GetOpt(
 		[ 's', 'start_revision', \GetOpt\GetOpt::REQUIRED_ARGUMENT ],
 		[ 'e', 'end_revision', \GetOpt\GetOpt::REQUIRED_ARGUMENT ],
         [ 't', 'tolerance' ],
-        [ 'standard' ],
+        [ 'standard', \GetOpt\GetOpt::REQUIRED_ARGUMENT ],
         [ 'log_level' ],
         [ 'ignore_space_changes', \GetOpt\GetOpt::NO_ARGUMENT ],
         [ 'sniff_unstaged', \GetOpt\GetOpt::NO_ARGUMENT ],
@@ -53,14 +53,6 @@ $getopt->getOption( 'tolerance', true )
         return in_array( $value, [ 'blockers', 'warnings', 'notes', 'none' ] );
     } )
     ->setDefaultValue( 'notes' );
-
-$getopt->getOption( 'standard', true )
-	->setMode( \GetOpt\GetOpt::OPTIONAL_ARGUMENT )
-	->setValidation( function( $value ) {
-		return in_array( $value, [
-		        'WordPress', 'WordPress-VIP', 'WordPress-Core', 'WordPress-Docs', 'WordPress-Extra', 'Toolset', 'VariableAnalysis'
-        ] );
-	} );
 
 $getopt->getOption( 'log_level', true )
 	->setMode( \GetOpt\GetOpt::OPTIONAL_ARGUMENT )
