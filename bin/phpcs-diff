@@ -78,6 +78,8 @@ $sniff_unstaged = $getopt->offsetExists( 'sniff_unstaged' );
 if( $sniff_unstaged ) {
     $start_revision = 'HEAD';
     $end_revision = Backends\Git::UNSTAGED;
+} elseif( null == $end_revision ) {
+    $end_revision = Backends\Git::UNSTAGED;
 }
 
 global $colour_primary, $colour_secondary;
