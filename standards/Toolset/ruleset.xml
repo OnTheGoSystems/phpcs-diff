@@ -52,21 +52,41 @@
     </rule>
 
     <!--
-        We allow this in JavaScript:
+        We allow this in JavaScript or in PHP anonymous functions:
 
         some_call( function( arg1, arg2 ) {
             ...
         } );
     -->
     <rule ref="PEAR.Functions.FunctionCallSignature.ContentAfterOpenBracket">
-        <exclude-pattern>*.js</exclude-pattern>
+        <severity>0</severity>
     </rule>
     <rule ref="PEAR.Functions.FunctionCallSignature.CloseBracketLine">
-        <exclude-pattern>*.js</exclude-pattern>
+        <severity>0</severity>
     </rule>
     <rule ref="PEAR.Functions.FunctionCallSignature.MultipleArguments">
-        <exclude-pattern>*.js</exclude-pattern>
+        <severity>0</severity>
     </rule>
 
+    <!--
+        Dear WordPress, using interpolated variables for table names is okay. ;)
+        TODO: Adjust the rule to ignore this specific case only, if possible.
+    -->
+    <rule ref="WordPress.DB.PreparedSQL.NotPrepared">
+        <severity>0</severity>
+    </rule>
+
+    <!--
+        This sniff is wreaking havoc with simple /** @var type */ comments in class properties.
+        TODO: We need it but with some exceptions.
+    -->
+    <rule ref="Generic.Commenting.DocComment.MissingShort">
+        <severity>0</severity>
+    </rule>
+
+    <!-- Not always practical, e.g. if commenting on individual array items with a single word... -->
+    <rule ref="Squiz.Commenting.InlineComment.InvalidEndChar">
+        <severity>0</severity>
+    </rule>
 
 </ruleset>
