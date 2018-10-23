@@ -95,13 +95,25 @@ class Main {
 
 		$diff_info	  = $this->version_control->parse_diff_for_info( $diff );
 		$file_diffs   = $diff_info['file_diffs'];
+		$total_changed_file_count = count( $file_diffs );
+		$this->log->log( LoggerInterface::INFO, sprintf( 'Retrieved diffs for %d changed files.', $total_changed_file_count ) );
 
 		$found_issues = array();
 		$found_issues_count = 0;
+		$current_file_number = 1;
 		foreach( $file_diffs as $filename => $file_info ) {
+
+			$this->log->log( LoggerInterface::INFO, sprintf(
+				'Processing file %d of %d: %s...',
+				$current_file_number++,
+				$total_changed_file_count,
+				$filename
+			) );
+
 			$line_mapping = new LineMapping();
 			$line_mapping->count_lines( $file_info['lines'] );
 			if ( ! $line_mapping->has_actionable_changes() ) {
+				$this->log->log( LoggerInterface::INFO, 'No actionable changes found.' );
 				continue;
 			}
 
@@ -116,6 +128,9 @@ class Main {
 			}
 			$found_issues[ $filename ] = $processed_file;
 			$found_issues_count += count( $processed_file );
+			$this->log->log( LoggerInterface::INFO, sprintf(
+				'Found %d issues in the changed code.', count( $processed_file )
+			) );
 		}
 
 		return $found_issues;

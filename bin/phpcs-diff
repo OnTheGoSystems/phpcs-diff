@@ -140,9 +140,11 @@ try {
 }
 
 
-function render_line( $filename, $line, $column, $message, $source ) {
+function render_line( $filename, $line, $column, $message, $source, $issue_number ) {
 	global $colour_primary, $colour_secondary;
-    return OUTPUT_BOLD . $colour_primary . "* " . $filename . ":" . $line . ':' . $column . OUTPUT_UNBOLD . PHP_EOL
+    return OUTPUT_BOLD . $colour_primary . "* "
+        . $colour_secondary . OUTPUT_REVERSE . $issue_number . OUTPUT_UNREVERSE . " "
+	    . $colour_primary . $filename . ":" . $line . ':' . $column . OUTPUT_UNBOLD . PHP_EOL
         . "\t" . $source . ": " . PHP_EOL
         . "\t" . $colour_secondary . $message . OUTPUT_RESET;
 }
@@ -151,14 +153,14 @@ $blockers = $warnings = $notes = [];
 foreach ( $found_issues as $filename => $issues ) {
 	foreach ( $issues as $line => $line_issues ) {
 		foreach( $line_issues as $issue ) {
-		    $output = render_line( $filename, $line, $issue['column'],  $issue['message'], $issue['source'] );
+		    $line_args = [ $filename, $line, $issue['column'],  $issue['message'], $issue['source'] ];
 
 			if ( 'ERROR' === $issue['level'] ) {
-				$blockers[] = $output;
+				$blockers[] = $line_args;
 			} else if ( 'WARNING' === $issue['level'] ) {
-				$warnings[] = $output;
+				$warnings[] = $line_args;
 			} else if ( 'NOTE' === $issue['level'] ) {
-				$notes[] = $output;
+				$notes[] = $line_args;
 			}
 		}
 	}
@@ -172,8 +174,11 @@ function echo_chapter( $title, $items ) {
     }
 
 	echo OUTPUT_REVERSE . OUTPUT_BOLD . $colour_primary . "### " . $title . OUTPUT_RESET . PHP_EOL . PHP_EOL;
-	foreach ( $items as $item ) {
-		echo $item . PHP_EOL;
+
+	$issue_number = 1;
+	foreach ( $items as $line_args ) {
+	    $line_args[] = $issue_number++;
+		echo call_user_func_array( '\PHPCSDiff\render_line', $line_args ) . PHP_EOL;
 	}
 
 	echo PHP_EOL;
