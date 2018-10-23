@@ -37,6 +37,10 @@
     <rule ref="WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned">
         <severity>0</severity>
     </rule>
+    <!-- We don't like these alignments in docblocks either. -->
+    <rule ref="Squiz.Commenting.FunctionComment.SpacingAfterParamType">
+        <severity>0</severity>
+    </rule>
 
     <!-- Do not follow silly filename rules of WordPress. TODO implement our own -->
     <rule ref="WordPress.Files.FileName.NotHyphenatedLowercase">
