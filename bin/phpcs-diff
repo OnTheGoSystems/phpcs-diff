@@ -13,7 +13,7 @@ namespace PHPCSDiff;
 
 use PHPCSDiff\Log\LoggerInterface;
 
-define( 'PHPCS_DIFF_PLUGIN_DIR', str_replace('\\', '/', dirname( dirname( __FILE__ ) ) ) );
+define( 'PHPCS_DIFF_PLUGIN_DIR', str_replace( '\\', '/', dirname( dirname( __FILE__ ) ) ) );
 define( 'PHPCS_DIFF_COMMAND', '"' . PHPCS_DIFF_PLUGIN_DIR . '/vendor/bin/phpcs' . '"' );
 define( 'PHPCS_DIFF_STANDARDS', PHPCS_DIFF_PLUGIN_DIR . '/standards' );
 
@@ -36,24 +36,26 @@ $getopt = new \GetOpt\GetOpt(
 	[
 		[ 's', 'start_revision', \GetOpt\GetOpt::REQUIRED_ARGUMENT ],
 		[ 'e', 'end_revision', \GetOpt\GetOpt::REQUIRED_ARGUMENT ],
-        [ 't', 'tolerance' ],
-        [ 'standard', \GetOpt\GetOpt::REQUIRED_ARGUMENT ],
-        [ 'log_level' ],
-        [ 'ignore_space_changes', \GetOpt\GetOpt::NO_ARGUMENT ],
-        [ 'sniff_unstaged', \GetOpt\GetOpt::NO_ARGUMENT ],
-        [ 'no_colours', \GetOpt\GetOpt::NO_ARGUMENT ],
-        [ 'colour_primary', \GetOpt\GetOpt::REQUIRED_ARGUMENT ],
-        [ 'colour_secondary', \GetOpt\GetOpt::REQUIRED_ARGUMENT ],
+		[ 't', 'tolerance' ],
+		[ 'standard', \GetOpt\GetOpt::REQUIRED_ARGUMENT ],
+		[ 'log_level' ],
+		[ 'ignore_space_changes', \GetOpt\GetOpt::NO_ARGUMENT ],
+		[ 'sniff_unstaged', \GetOpt\GetOpt::NO_ARGUMENT ],
+		[ 'no_colours', \GetOpt\GetOpt::NO_ARGUMENT ],
+		[ 'colour_primary', \GetOpt\GetOpt::REQUIRED_ARGUMENT ],
+		[ 'colour_secondary', \GetOpt\GetOpt::REQUIRED_ARGUMENT ],
 		[ 'excluded_exts', \GetOpt\GetOpt::OPTIONAL_ARGUMENT ],
 	]
 );
 
 $getopt->getOption( 'tolerance', true )
-    ->setMode( \GetOpt\GetOpt::OPTIONAL_ARGUMENT )
-    ->setValidation( function( $value ) {
-        return in_array( $value, [ 'blockers', 'warnings', 'notes', 'none' ] );
-    } )
-    ->setDefaultValue( 'notes' );
+	->setMode( \GetOpt\GetOpt::OPTIONAL_ARGUMENT )
+	->setValidation(
+		function ( $value ) {
+			return in_array( $value, [ 'blockers', 'warnings', 'notes', 'none' ] );
+		}
+	)
+	->setDefaultValue( 'notes' );
 
 $getopt->getOption( 'log_level', true )
 	->setMode( \GetOpt\GetOpt::OPTIONAL_ARGUMENT )
@@ -65,6 +67,7 @@ try {
 } catch ( \GetOpt\ArgumentException $exception ) {
 	file_put_contents( 'php://stderr', $exception->getMessage() . PHP_EOL );
 	echo PHP_EOL . $getopt->getHelpText();
+
 	return 1;
 }
 
@@ -77,48 +80,48 @@ $no_colours = $getopt->offsetExists( 'no_colours' );
 $excluded_exts = $getopt->getOption( 'excluded_exts' );
 
 $sniff_unstaged = $getopt->offsetExists( 'sniff_unstaged' );
-if( $sniff_unstaged ) {
-    $start_revision = 'HEAD';
-    $end_revision = Backends\Git::UNSTAGED;
-} elseif( null == $end_revision ) {
-    $end_revision = Backends\Git::UNSTAGED;
+if ( $sniff_unstaged ) {
+	$start_revision = 'HEAD';
+	$end_revision = Backends\Git::UNSTAGED;
+} elseif ( null == $end_revision ) {
+	$end_revision = Backends\Git::UNSTAGED;
 }
 
 global $colour_primary, $colour_secondary;
 
-if( $no_colours ) {
+if ( $no_colours ) {
 	$colour_primary = '';
 	$colour_secondary = '';
 } else {
-    function arg_to_colour( $arg, $default ) {
-        $arg_to_colour_map = [
-            'default' => "\e[39m",
-            'black' => "\e[30m",
-            'red' => "\e[31m",
-            'green' => "\e[32m",
-            'yellow' => "\e[33m",
-            'blue' => "\e[34m",
-            'magenta' => "\e[35m",
-            'cyan' => "\e[36m",
-            'lightgray' => "\e[37m",
-            'darkgray' => "\e[90m",
-            'lightred' => "\e[91m",
-            'lightgreen' => "\e[92m",
-            'lightyellow' => "\e[93m",
-            'lightblue' => "\e[94m",
-            'lightmagenta' => "\e[95m",
-            'lightcyan' => "\e[96m",
-            'white' => "\e[97m"
-        ];
+	function arg_to_colour( $arg, $default ) {
+		$arg_to_colour_map = [
+			'default' => "\e[39m",
+			'black' => "\e[30m",
+			'red' => "\e[31m",
+			'green' => "\e[32m",
+			'yellow' => "\e[33m",
+			'blue' => "\e[34m",
+			'magenta' => "\e[35m",
+			'cyan' => "\e[36m",
+			'lightgray' => "\e[37m",
+			'darkgray' => "\e[90m",
+			'lightred' => "\e[91m",
+			'lightgreen' => "\e[92m",
+			'lightyellow' => "\e[93m",
+			'lightblue' => "\e[94m",
+			'lightmagenta' => "\e[95m",
+			'lightcyan' => "\e[96m",
+			'white' => "\e[97m",
+		];
 
-        if( ! array_key_exists( $arg, $arg_to_colour_map ) ) {
-            return $default;
-        }
+		if ( ! array_key_exists( $arg, $arg_to_colour_map ) ) {
+			return $default;
+		}
 
-        return $arg_to_colour_map[ $arg ];
-    }
+		return $arg_to_colour_map[ $arg ];
+	}
 
-    $colour_primary = $getopt->offsetExists( 'colour_primary' ) ? arg_to_colour( $getopt->getOption( 'colour_primary' ), COLOUR_PRIMARY ) : COLOUR_PRIMARY;
+	$colour_primary = $getopt->offsetExists( 'colour_primary' ) ? arg_to_colour( $getopt->getOption( 'colour_primary' ), COLOUR_PRIMARY ) : COLOUR_PRIMARY;
 	$colour_secondary = $getopt->offsetExists( 'colour_secondary' ) ? arg_to_colour( $getopt->getOption( 'colour_secondary' ), COLOUR_SECONDARY ) : COLOUR_SECONDARY;
 }
 
@@ -138,30 +141,31 @@ try {
 		. 'Trace: ' . $e->getTraceAsString()
 	);
 
-	exit(1);
+	exit( 1 );
 }
 
 
 function render_line( $filename, $line, $column, $message, $source, $issue_number ) {
 	global $colour_primary, $colour_secondary;
-    return OUTPUT_BOLD . $colour_primary . "* "
-        . $colour_secondary . OUTPUT_REVERSE . $issue_number . OUTPUT_UNREVERSE . " "
-	    . $colour_primary . $filename . ":" . $line . ':' . $column . OUTPUT_UNBOLD . PHP_EOL
-        . "\t" . $source . ": " . PHP_EOL
-        . "\t" . $colour_secondary . $message . OUTPUT_RESET;
+
+	return OUTPUT_BOLD . $colour_primary . "* "
+		. $colour_secondary . OUTPUT_REVERSE . $issue_number . OUTPUT_UNREVERSE . " "
+		. $colour_primary . $filename . ":" . $line . ':' . $column . OUTPUT_UNBOLD . PHP_EOL
+		. "\t" . $source . ": " . PHP_EOL
+		. "\t" . $colour_secondary . $message . OUTPUT_RESET;
 }
 
 $blockers = $warnings = $notes = [];
 foreach ( $found_issues as $filename => $issues ) {
 	foreach ( $issues as $line => $line_issues ) {
-		foreach( $line_issues as $issue ) {
-		    $line_args = [ $filename, $line, $issue['column'],  $issue['message'], $issue['source'] ];
+		foreach ( $line_issues as $issue ) {
+			$line_args = [ $filename, $line, $issue['column'], $issue['message'], $issue['source'] ];
 
 			if ( 'ERROR' === $issue['level'] ) {
 				$blockers[] = $line_args;
-			} else if ( 'WARNING' === $issue['level'] ) {
+			} elseif ( 'WARNING' === $issue['level'] ) {
 				$warnings[] = $line_args;
-			} else if ( 'NOTE' === $issue['level'] ) {
+			} elseif ( 'NOTE' === $issue['level'] ) {
 				$notes[] = $line_args;
 			}
 		}
@@ -171,15 +175,15 @@ foreach ( $found_issues as $filename => $issues ) {
 function echo_chapter( $title, $items ) {
 	global $colour_primary;
 
-    if( empty( $items ) ) {
-        return;
-    }
+	if ( empty( $items ) ) {
+		return;
+	}
 
 	echo OUTPUT_REVERSE . OUTPUT_BOLD . $colour_primary . "### " . $title . OUTPUT_RESET . PHP_EOL . PHP_EOL;
 
 	$issue_number = 1;
 	foreach ( $items as $line_args ) {
-	    $line_args[] = $issue_number++;
+		$line_args[] = $issue_number ++;
 		echo call_user_func_array( '\PHPCSDiff\render_line', $line_args ) . PHP_EOL;
 	}
 
@@ -191,21 +195,21 @@ echo_chapter( 'Blockers', $blockers );
 echo_chapter( 'Warnings', $warnings );
 echo_chapter( 'Notes', $notes );
 printf(
-        "\nAnalysis completed with %s blockers, %s warnings and %s notes.\n",
-        count( $blockers ), count( $warnings ), count( $notes )
+	"\nAnalysis completed with %s blockers, %s warnings and %s notes.\n",
+	count( $blockers ), count( $warnings ), count( $notes )
 );
 
 $tolerance = $getopt->getOption( 'tolerance' );
-if( 'blockers' === $tolerance ) {
-    exit(0);
-} elseif( empty( $blockers ) ) {
-    if( 'warnings' === $tolerance ) {
-	    exit(0);
-    } elseif( empty( $warnings ) ) {
-        if( 'notes' === $tolerance || empty( $notes ) ) {
-	        exit(0);
-        }
-    }
+if ( 'blockers' === $tolerance ) {
+	exit( 0 );
+} elseif ( empty( $blockers ) ) {
+	if ( 'warnings' === $tolerance ) {
+		exit( 0 );
+	} elseif ( empty( $warnings ) ) {
+		if ( 'notes' === $tolerance || empty( $notes ) ) {
+			exit( 0 );
+		}
+	}
 }
 
-exit(1);
+exit( 1 );
