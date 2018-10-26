@@ -44,6 +44,7 @@ $getopt = new \GetOpt\GetOpt(
         [ 'no_colours', \GetOpt\GetOpt::NO_ARGUMENT ],
         [ 'colour_primary', \GetOpt\GetOpt::REQUIRED_ARGUMENT ],
         [ 'colour_secondary', \GetOpt\GetOpt::REQUIRED_ARGUMENT ],
+		[ 'excluded_exts', \GetOpt\GetOpt::OPTIONAL_ARGUMENT ],
 	]
 );
 
@@ -73,6 +74,7 @@ $phpcs_standard = $getopt->getOption( 'standard' );
 $log_level = $getopt->getOption( 'log_level' );
 $ignore_space_changes = $getopt->offsetExists( 'ignore_space_changes' );
 $no_colours = $getopt->offsetExists( 'no_colours' );
+$excluded_exts = $getopt->getOption( 'excluded_exts' );
 
 $sniff_unstaged = $getopt->offsetExists( 'sniff_unstaged' );
 if( $sniff_unstaged ) {
@@ -127,7 +129,7 @@ $controller = new Main( $version_control, $logger, $options );
 $controller->set_phpcs_standard( $phpcs_standard );
 
 try {
-	$found_issues = $controller->run( $start_revision, $end_revision, '' );
+	$found_issues = $controller->run( $start_revision, $end_revision, '', $excluded_exts );
 } catch ( \Exception $e ) {
 	$logger->log(
 		LoggerInterface::ERROR,

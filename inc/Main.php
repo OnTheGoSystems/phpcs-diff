@@ -65,19 +65,23 @@ class Main {
 	}
 
 	public function set_excluded_extensions( $excluded_exts ) {
-		if ( false === is_array( $excluded_exts) ) {
+		if ( false === is_array( $excluded_exts ) ) {
 			$excluded_exts = explode( ',', $excluded_exts );
 		}
 		$this->excluded_extensions = $excluded_exts;
 	}
 
-	public function run( $oldest_rev, $newest_rev, $directory = '' ) {
+	public function run( $oldest_rev, $newest_rev, $directory = '', $excluded_exts = '' ) {
 
 		if ( true !== $this->nocache ) {
 			$found_issues = false; //wp_cache_get( $cache_key, $cache_group );
 			if ( false !== $found_issues ) {
 				return $found_issues;
 			}
+		}
+
+		if ( '' !== $excluded_exts ) {
+			$this->set_excluded_extensions( $excluded_exts );
 		}
 
 		$diff  = trim( $this->version_control->get_diff( $directory, $newest_rev, $oldest_rev, [] ) );
@@ -146,7 +150,13 @@ class Main {
 		}
 
 		foreach( $this->excluded_extensions as $excluded_ext ) {
-			if ( function_exists( 'wp_endswith' ) && wp_endswith( $filename, $excluded_ext ) ) {
+			if (
+				(
+					function_exists( 'wp_endswith' ) &&
+					wp_endswith( $filename, $excluded_ext )
+				) ||
+				$excluded_ext === pathinfo( $filename, PATHINFO_EXTENSION )
+			) {
 				return false;
 			}
 		}
