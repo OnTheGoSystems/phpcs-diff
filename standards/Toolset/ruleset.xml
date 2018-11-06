@@ -19,6 +19,7 @@
 
     <!--
         TODO add a sniff for missing translators: comment in Twig templates.
+        TODO add a sniff for mixed indents (except before docblocks): https://github.com/squizlabs/PHP_CodeSniffer/issues/547
     -->
 
     <!--
@@ -28,6 +29,18 @@
     <rule ref="Squiz.PHP.DisallowMultipleAssignments">
         <type>warning</type>
     </rule>
+
+    <!-- These are relevant but not critical... -->
+    <rule ref="WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceAfterStructureOpen">
+        <type>warning</type>
+    </rule>
+    <rule ref="WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceBeforeOpenParenthesis">
+        <type>warning</type>
+    </rule>
+    <rule ref="Squiz.ControlStructures.ControlSignature.SpaceAfterKeyword">
+        <type>warning</type>
+    </rule>
+
 
     <!--
         EXCLUSIONS
