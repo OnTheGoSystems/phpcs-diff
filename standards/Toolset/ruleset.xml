@@ -133,13 +133,29 @@
         <severity>0</severity>
     </rule>
 
+    <!-- This produces false alarms because we don't use the nonce verfication directly. -->
+    <rule ref="WordPress.Security.NonceVerification.NoNonceVerification">
+        <severity>0</severity>
+    </rule>
+
+    <!--
+        We're using also slashes in hook names.
+        TODO: Still validate hook names, only allow slashes
+    -->
+    <rule ref="WordPress.NamingConventions.ValidHookName.UseUnderscores">
+        <severity>0</severity>
+    </rule>
+
+
+    <!--
+        TEST-SPECIFIC EXCLUSIONS
+    -->
     <rule ref="Squiz.Commenting.ClassComment.Missing">
         <exclude-pattern>*/phpunit/*</exclude-pattern>
     </rule>
 
-    <!-- This produces false alarms because we don't use the nonce verfication directly. -->
-    <rule ref="WordPress.Security.NonceVerification.NoNonceVerification">
-        <severity>0</severity>
+    <rule ref="WordPress.WP.GlobalVariablesOverride.OverrideProhibited">
+        <exclude-pattern>*/phpunit/*</exclude-pattern>
     </rule>
 
 
