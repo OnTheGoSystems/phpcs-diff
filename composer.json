@@ -16,6 +16,7 @@
     "php": "^7",
     "squizlabs/php_codesniffer": "3.*",
     "wp-coding-standards/wpcs": "*",
+    "otgs/toolset-coding-standards": "dev-master",
     "dealerdirect/phpcodesniffer-composer-installer": "^0.4.4",
     "sebastian/diff": "^3.0",
     "ulrichsg/getopt-php": "^3.0",
@@ -44,8 +45,9 @@
       "vendor/wp-coding-standards/wpcs/WordPress-Core": "standards/WordPress-Core",
       "vendor/wp-coding-standards/wpcs/WordPress-Docs": "standards/WordPress-Docs",
       "vendor/wp-coding-standards/wpcs/WordPress-Extra": "standards/WordPress-Extra",
-      "vendor/wp-coding-standards/wpcs/WordPress-VIP": "standards/WordPress-VIP",
-      "vendor/sirbrillig/phpcs-variable-analysis/VariableAnalysis": "standards/VariableAnalysis"
+      "vendor/sirbrillig/phpcs-variable-analysis/VariableAnalysis": "standards/VariableAnalysis",
+      "vendor/otgs/toolset-coding-standards/Toolset": "standards/Toolset"
     }
-  }
+  },
+  "minimum-stability": "dev"
 }
