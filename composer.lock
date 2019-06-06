@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0de8a11446ddbb68171c82c7b9e61e3a",
+    "content-hash": "c4cc81dfe620f4be90dc82ad18a50e38",
     "packages": [
         {
             "name": "dealerdirect/phpcodesniffer-composer-installer",
@@ -80,12 +80,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/OnTheGoSystems/toolset-coding-standards.git",
-                "reference": "26b6af6047d2fb97ab92744e8694bd314607d0bb"
+                "reference": "898c7eebf876298e5cb97117442597ca8ef015b9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/OnTheGoSystems/toolset-coding-standards/zipball/26b6af6047d2fb97ab92744e8694bd314607d0bb",
-                "reference": "26b6af6047d2fb97ab92744e8694bd314607d0bb",
+                "url": "https://api.github.com/repos/OnTheGoSystems/toolset-coding-standards/zipball/898c7eebf876298e5cb97117442597ca8ef015b9",
+                "reference": "898c7eebf876298e5cb97117442597ca8ef015b9",
                 "shasum": ""
             },
             "require": {
@@ -93,25 +93,30 @@
                 "sirbrillig/phpcs-variable-analysis": "^2.1",
                 "wp-coding-standards/wpcs": "*"
             },
-            "type": "library",
+            "type": "phpcodesniffer-standard",
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "GPL-3.0"
             ],
             "authors": [
                 {
-                    "name": "OnTheGoSystems",
-                    "email": "hello@wpml.org"
+                    "name": "Jan Štětina",
+                    "email": "jan.s@onthegosystems.com"
                 },
                 {
-                    "name": "Jan Štětina",
-                    "email": "jan.s@onthegosystems.com",
+                    "name": "OnTheGoSystems",
+                    "email": "hello@wpml.org",
                     "homepage": "https://onthegosystems.com"
                 }
             ],
             "description": "A set of phpcs rules used in Toolset",
             "homepage": "https://github.com/OnTheGoSystems/toolset-coding-standards",
-            "time": "2019-06-06T12:14:06+00:00"
+            "keywords": [
+                "compatibility",
+                "phpcs",
+                "standards"
+            ],
+            "time": "2019-06-06T14:47:38+00:00"
         },
         {
             "name": "roave/security-advisories",
@@ -528,28 +533,30 @@
         },
         {
             "name": "ulrichsg/getopt-php",
-            "version": "v3.x-dev",
+            "version": "3.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getopt-php/getopt-php.git",
-                "reference": "411341639c786d78f6d379595dabee21532261ee"
+                "reference": "6d22d6febd672954bf1b9676a4833489c5509116"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getopt-php/getopt-php/zipball/411341639c786d78f6d379595dabee21532261ee",
-                "reference": "411341639c786d78f6d379595dabee21532261ee",
+                "url": "https://api.github.com/repos/getopt-php/getopt-php/zipball/6d22d6febd672954bf1b9676a4833489c5509116",
+                "reference": "6d22d6febd672954bf1b9676a4833489c5509116",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0"
+                "ext-mbstring": "*",
+                "php": ">=5.4.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "3.7.*"
+                "phpunit/phpunit": "^4.8",
+                "squizlabs/php_codesniffer": "^2.7"
             },
             "type": "library",
             "autoload": {
-                "psr-0": {
-                    "Ulrichsg\\": "src"
+                "psr-4": {
+                    "GetOpt\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -560,11 +567,15 @@
                 {
                     "name": "Ulrich Schmidt-Goertz",
                     "email": "ulrich@schmidt-goertz.de"
+                },
+                {
+                    "name": "Thomas Flori",
+                    "email": "thflori@gmail.com"
                 }
             ],
-            "description": "Command line arguments parser for PHP 5.3",
-            "homepage": "http://ulrichsg.github.io/getopt-php",
-            "time": "2015-04-07T09:47:53+00:00"
+            "description": "Command line arguments parser for PHP 5.4 - 7.1",
+            "homepage": "http://getopt-php.github.io/getopt-php",
+            "time": "2018-08-17T04:48:55+00:00"
         },
         {
             "name": "wp-coding-standards/wpcs",

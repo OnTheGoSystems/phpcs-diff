@@ -195,10 +195,16 @@ class Git implements BackendInterface {
 			$phpcs_standard_arg = '';
 		}
 
+		if( null !== $standards_location ) {
+			$standards_location_arg = sprintf( '--runtime-set installed_paths %s', escapeshellarg( $standards_location ) );
+		} else {
+			$standards_location_arg = '';
+		}
+
 		$phpcs_command = sprintf(
-			'%s --report=json --runtime-set installed_paths %s %s --stdin-path=%s -',
+			'%s --report=json %s %s --stdin-path=%s -',
 			escapeshellcmd( $phpcs_command ),
-			escapeshellarg( $standards_location ),
+			$standards_location_arg,
 			$phpcs_standard_arg,
 			escapeshellarg( $filename )
 		);

@@ -11,6 +11,7 @@
 
 namespace PHPCSDiff;
 
+use GetOpt\GetOpt;
 use PHPCSDiff\Log\LoggerInterface;
 
 define( 'PHPCS_DIFF_PLUGIN_DIR', str_replace( '\\', '/', dirname( dirname( __FILE__ ) ) ) );
@@ -32,24 +33,26 @@ echo "\n$logo\n" . OUTPUT_UNDERLINED . COLOUR_SECONDARY . 'https://github.com/za
 
 require_once PHPCS_DIFF_PLUGIN_DIR . '/vendor/autoload.php';
 
-$getopt = new \GetOpt\GetOpt(
+$getopt = new GetOpt(
 	[
-		[ 's', 'start_revision', \GetOpt\GetOpt::REQUIRED_ARGUMENT ],
-		[ 'e', 'end_revision', \GetOpt\GetOpt::REQUIRED_ARGUMENT ],
+		[ 's', 'start_revision', GetOpt::REQUIRED_ARGUMENT ],
+		[ 'e', 'end_revision', GetOpt::REQUIRED_ARGUMENT ],
 		[ 't', 'tolerance' ],
-		[ 'standard', \GetOpt\GetOpt::REQUIRED_ARGUMENT ],
+		[ 'standard', GetOpt::REQUIRED_ARGUMENT ],
 		[ 'log_level' ],
-		[ 'ignore_space_changes', \GetOpt\GetOpt::NO_ARGUMENT ],
-		[ 'sniff_unstaged', \GetOpt\GetOpt::NO_ARGUMENT ],
-		[ 'no_colours', \GetOpt\GetOpt::NO_ARGUMENT ],
-		[ 'colour_primary', \GetOpt\GetOpt::REQUIRED_ARGUMENT ],
-		[ 'colour_secondary', \GetOpt\GetOpt::REQUIRED_ARGUMENT ],
-		[ 'excluded_exts', \GetOpt\GetOpt::OPTIONAL_ARGUMENT ],
+		[ 'ignore_space_changes', GetOpt::NO_ARGUMENT ],
+		[ 'sniff_unstaged', GetOpt::NO_ARGUMENT ],
+		[ 'no_colours', GetOpt::NO_ARGUMENT ],
+		[ 'colour_primary', GetOpt::REQUIRED_ARGUMENT ],
+		[ 'colour_secondary', GetOpt::REQUIRED_ARGUMENT ],
+		[ 'excluded_exts', GetOpt::OPTIONAL_ARGUMENT ],
+		[ 'standards_location', GetOpt::OPTIONAL_ARGUMENT ],
+		[ 'default_standards_location', GetOpt::NO_ARGUMENT ],
 	]
 );
 
 $getopt->getOption( 'tolerance', true )
-	->setMode( \GetOpt\GetOpt::OPTIONAL_ARGUMENT )
+	->setMode( GetOpt::OPTIONAL_ARGUMENT )
 	->setValidation(
 		function ( $value ) {
 			return in_array( $value, [ 'blockers', 'warnings', 'notes', 'none' ] );
@@ -58,7 +61,7 @@ $getopt->getOption( 'tolerance', true )
 	->setDefaultValue( 'notes' );
 
 $getopt->getOption( 'log_level', true )
-	->setMode( \GetOpt\GetOpt::OPTIONAL_ARGUMENT )
+	->setMode( GetOpt::OPTIONAL_ARGUMENT )
 	->setValidation( 'is_numeric' )
 	->setDefaultValue( LoggerInterface::WARNING );
 
@@ -78,6 +81,8 @@ $log_level = $getopt->getOption( 'log_level' );
 $ignore_space_changes = $getopt->offsetExists( 'ignore_space_changes' );
 $no_colours = $getopt->offsetExists( 'no_colours' );
 $excluded_exts = $getopt->getOption( 'excluded_exts' );
+$standards_location = $getopt->getOption( 'standards_location' );
+$default_standards_location = $getopt->getOption( 'default_standards_location' );
 
 $sniff_unstaged = $getopt->offsetExists( 'sniff_unstaged' );
 if ( $sniff_unstaged ) {
@@ -125,8 +130,14 @@ if ( $no_colours ) {
 	$colour_secondary = $getopt->offsetExists( 'colour_secondary' ) ? arg_to_colour( $getopt->getOption( 'colour_secondary' ), COLOUR_SECONDARY ) : COLOUR_SECONDARY;
 }
 
+if( $default_standards_location ) {
+	$standards_location = null;
+} elseif( null === $standards_location ) {
+	$standards_location = PHPCS_DIFF_STANDARDS;
+}
+
 $logger = new Log\ShellLogger( (int) $log_level );
-$options = [ 'ignore-space-change' => $ignore_space_changes ];
+$options = [ 'ignore-space-change' => $ignore_space_changes, 'standards_location' => $standards_location ];
 $version_control = new Backends\Git( '', $logger, $options );
 $controller = new Main( $version_control, $logger, $options );
 $controller->set_phpcs_standard( $phpcs_standard );

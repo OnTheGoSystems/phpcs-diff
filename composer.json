@@ -19,7 +19,7 @@
     "otgs/toolset-coding-standards": "dev-master",
     "dealerdirect/phpcodesniffer-composer-installer": "^0.4.4",
     "sebastian/diff": "^3.0",
-    "ulrichsg/getopt-php": "^3.0",
+    "ulrichsg/getopt-php": "3.2.1",
     "slowprog/composer-copy-file": "~0.2",
     "sirbrillig/phpcs-variable-analysis": "^2.1"
   },
