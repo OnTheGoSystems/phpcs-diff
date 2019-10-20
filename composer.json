@@ -46,7 +46,8 @@
       "vendor/wp-coding-standards/wpcs/WordPress-Docs": "standards/WordPress-Docs",
       "vendor/wp-coding-standards/wpcs/WordPress-Extra": "standards/WordPress-Extra",
       "vendor/sirbrillig/phpcs-variable-analysis/VariableAnalysis": "standards/VariableAnalysis",
-      "vendor/otgs/toolset-coding-standards/Toolset": "standards/Toolset"
+      "vendor/otgs/toolset-coding-standards/Toolset": "standards/Toolset",
+      "vendor/automattic/phpcs-neutron-standard/NeutronStandard": "standards/NeutronStandard"
     }
   },
   "minimum-stability": "dev"
