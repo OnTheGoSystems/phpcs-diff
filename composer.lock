@@ -169,12 +169,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/OnTheGoSystems/toolset-coding-standards.git",
-                "reference": "088a72569691ec3336a77f47c8d08974dbaa67d6"
+                "reference": "ba576ea18e1d83feb29b9aa156d1a0fa7a4ab61a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/OnTheGoSystems/toolset-coding-standards/zipball/088a72569691ec3336a77f47c8d08974dbaa67d6",
-                "reference": "088a72569691ec3336a77f47c8d08974dbaa67d6",
+                "url": "https://api.github.com/repos/OnTheGoSystems/toolset-coding-standards/zipball/ba576ea18e1d83feb29b9aa156d1a0fa7a4ab61a",
+                "reference": "ba576ea18e1d83feb29b9aa156d1a0fa7a4ab61a",
                 "shasum": ""
             },
             "require": {
@@ -209,7 +209,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2019-10-20T13:38:33+00:00"
+            "time": "2019-10-22T11:51:13+00:00"
         },
         {
             "name": "sebastian/diff",
@@ -369,12 +369,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "bd701a97e9d7eb953f0dfa484cb083202d6c744e"
+                "reference": "ae3aae46a11e3978f088552160ccca13a01b28e1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/bd701a97e9d7eb953f0dfa484cb083202d6c744e",
-                "reference": "bd701a97e9d7eb953f0dfa484cb083202d6c744e",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/ae3aae46a11e3978f088552160ccca13a01b28e1",
+                "reference": "ae3aae46a11e3978f088552160ccca13a01b28e1",
                 "shasum": ""
             },
             "require": {
@@ -412,7 +412,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2019-10-17T20:51:12+00:00"
+            "time": "2019-10-21T22:30:05+00:00"
         },
         {
             "name": "ulrichsg/getopt-php",
