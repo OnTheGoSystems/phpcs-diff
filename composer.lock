@@ -217,12 +217,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/diff.git",
-                "reference": "d7e7810940c78f3343420f76adf92dc437b7a557"
+                "reference": "2ce6675fe77612cce2a49d0cecb4e7afead64323"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/diff/zipball/d7e7810940c78f3343420f76adf92dc437b7a557",
-                "reference": "d7e7810940c78f3343420f76adf92dc437b7a557",
+                "url": "https://api.github.com/repos/sebastianbergmann/diff/zipball/2ce6675fe77612cce2a49d0cecb4e7afead64323",
+                "reference": "2ce6675fe77612cce2a49d0cecb4e7afead64323",
                 "shasum": ""
             },
             "require": {
@@ -249,12 +249,12 @@
             ],
             "authors": [
                 {
-                    "name": "Kore Nordmann",
-                    "email": "mail@kore-nordmann.de"
-                },
-                {
                     "name": "Sebastian Bergmann",
                     "email": "sebastian@phpunit.de"
+                },
+                {
+                    "name": "Kore Nordmann",
+                    "email": "mail@kore-nordmann.de"
                 }
             ],
             "description": "Diff implementation",
@@ -265,7 +265,7 @@
                 "unidiff",
                 "unified diff"
             ],
-            "time": "2019-07-02T07:43:30+00:00"
+            "time": "2019-10-23T09:06:00+00:00"
         },
         {
             "name": "sirbrillig/phpcs-variable-analysis",
@@ -369,12 +369,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "ae3aae46a11e3978f088552160ccca13a01b28e1"
+                "reference": "200eae562f8c449107d2378a7f886586e77c6c8e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/ae3aae46a11e3978f088552160ccca13a01b28e1",
-                "reference": "ae3aae46a11e3978f088552160ccca13a01b28e1",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/200eae562f8c449107d2378a7f886586e77c6c8e",
+                "reference": "200eae562f8c449107d2378a7f886586e77c6c8e",
                 "shasum": ""
             },
             "require": {
@@ -412,7 +412,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2019-10-21T22:30:05+00:00"
+            "time": "2019-11-07T21:12:56+00:00"
         },
         {
             "name": "ulrichsg/getopt-php",
