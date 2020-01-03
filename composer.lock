@@ -169,12 +169,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/OnTheGoSystems/toolset-coding-standards.git",
-                "reference": "ba576ea18e1d83feb29b9aa156d1a0fa7a4ab61a"
+                "reference": "214c4f0b4026b13883ec55ccdfc695204c5128e4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/OnTheGoSystems/toolset-coding-standards/zipball/ba576ea18e1d83feb29b9aa156d1a0fa7a4ab61a",
-                "reference": "ba576ea18e1d83feb29b9aa156d1a0fa7a4ab61a",
+                "url": "https://api.github.com/repos/OnTheGoSystems/toolset-coding-standards/zipball/214c4f0b4026b13883ec55ccdfc695204c5128e4",
+                "reference": "214c4f0b4026b13883ec55ccdfc695204c5128e4",
                 "shasum": ""
             },
             "require": {
@@ -209,7 +209,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2019-10-22T11:51:13+00:00"
+            "time": "2020-01-03T10:44:42+00:00"
         },
         {
             "name": "sebastian/diff",
@@ -217,12 +217,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/diff.git",
-                "reference": "16e54fbc971c14d98779b9c3b22572178ff9411f"
+                "reference": "81601e236afb661d9ddb85a9d8467a6f1156cd2f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/diff/zipball/16e54fbc971c14d98779b9c3b22572178ff9411f",
-                "reference": "16e54fbc971c14d98779b9c3b22572178ff9411f",
+                "url": "https://api.github.com/repos/sebastianbergmann/diff/zipball/81601e236afb661d9ddb85a9d8467a6f1156cd2f",
+                "reference": "81601e236afb661d9ddb85a9d8467a6f1156cd2f",
                 "shasum": ""
             },
             "require": {
@@ -265,7 +265,7 @@
                 "unidiff",
                 "unified diff"
             ],
-            "time": "2019-11-18T19:26:59+00:00"
+            "time": "2019-12-27T07:42:46+00:00"
         },
         {
             "name": "sirbrillig/phpcs-variable-analysis",
