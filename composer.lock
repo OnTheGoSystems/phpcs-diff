@@ -169,12 +169,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/OnTheGoSystems/toolset-coding-standards.git",
-                "reference": "214c4f0b4026b13883ec55ccdfc695204c5128e4"
+                "reference": "379b3216b40578fe42644318fa2681a681c9c4a7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/OnTheGoSystems/toolset-coding-standards/zipball/214c4f0b4026b13883ec55ccdfc695204c5128e4",
-                "reference": "214c4f0b4026b13883ec55ccdfc695204c5128e4",
+                "url": "https://api.github.com/repos/OnTheGoSystems/toolset-coding-standards/zipball/379b3216b40578fe42644318fa2681a681c9c4a7",
+                "reference": "379b3216b40578fe42644318fa2681a681c9c4a7",
                 "shasum": ""
             },
             "require": {
@@ -209,20 +209,20 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2020-01-03T10:44:42+00:00"
+            "time": "2020-02-24T09:29:07+00:00"
         },
         {
             "name": "sebastian/diff",
-            "version": "dev-master",
+            "version": "3.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/diff.git",
-                "reference": "81601e236afb661d9ddb85a9d8467a6f1156cd2f"
+                "reference": "720fcc7e9b5cf384ea68d9d930d480907a0c1a29"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/diff/zipball/81601e236afb661d9ddb85a9d8467a6f1156cd2f",
-                "reference": "81601e236afb661d9ddb85a9d8467a6f1156cd2f",
+                "url": "https://api.github.com/repos/sebastianbergmann/diff/zipball/720fcc7e9b5cf384ea68d9d930d480907a0c1a29",
+                "reference": "720fcc7e9b5cf384ea68d9d930d480907a0c1a29",
                 "shasum": ""
             },
             "require": {
@@ -230,7 +230,7 @@
             },
             "require-dev": {
                 "phpunit/phpunit": "^7.5 || ^8.0",
-                "symfony/process": "^2 || ^3.3 || ^4 || ^5"
+                "symfony/process": "^2 || ^3.3 || ^4"
             },
             "type": "library",
             "extra": {
@@ -249,12 +249,12 @@
             ],
             "authors": [
                 {
-                    "name": "Sebastian Bergmann",
-                    "email": "sebastian@phpunit.de"
-                },
-                {
                     "name": "Kore Nordmann",
                     "email": "mail@kore-nordmann.de"
+                },
+                {
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de"
                 }
             ],
             "description": "Diff implementation",
@@ -265,32 +265,32 @@
                 "unidiff",
                 "unified diff"
             ],
-            "time": "2019-12-27T07:42:46+00:00"
+            "time": "2019-02-04T06:01:07+00:00"
         },
         {
             "name": "sirbrillig/phpcs-variable-analysis",
-            "version": "v2.8.0",
+            "version": "v2.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sirbrillig/phpcs-variable-analysis.git",
-                "reference": "822db6b1963a7f81e68493ed6ad4652e419777dd"
+                "reference": "5be26b4d719acaf7a433d1cad469159cbf034f2a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sirbrillig/phpcs-variable-analysis/zipball/822db6b1963a7f81e68493ed6ad4652e419777dd",
-                "reference": "822db6b1963a7f81e68493ed6ad4652e419777dd",
+                "url": "https://api.github.com/repos/sirbrillig/phpcs-variable-analysis/zipball/5be26b4d719acaf7a433d1cad469159cbf034f2a",
+                "reference": "5be26b4d719acaf7a433d1cad469159cbf034f2a",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.6.0"
+                "php": ">=5.6.0",
+                "squizlabs/php_codesniffer": "^3.1"
             },
             "require-dev": {
-                "dealerdirect/phpcodesniffer-composer-installer": "^0.4.4",
+                "dealerdirect/phpcodesniffer-composer-installer": "^0.4.4 || ^0.5 || ^0.6",
                 "limedeck/phpunit-detailed-printer": "^3.1",
                 "phpstan/phpstan": "^0.11.8",
-                "phpunit/phpunit": "^6.5",
-                "sirbrillig/phpcs-import-detection": "^1.1",
-                "squizlabs/php_codesniffer": "^3.1"
+                "phpunit/phpunit": "^5.0 || ^6.5",
+                "sirbrillig/phpcs-import-detection": "^1.1"
             },
             "type": "phpcodesniffer-standard",
             "autoload": {
@@ -313,7 +313,7 @@
                 }
             ],
             "description": "A PHPCS sniff to detect problems with variables.",
-            "time": "2019-10-10T23:00:08+00:00"
+            "time": "2020-02-11T22:18:48+00:00"
         },
         {
             "name": "slowprog/composer-copy-file",
@@ -369,12 +369,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "278b643f2a5ec1b92fd60b2d7dac034f3a52ea4e"
+                "reference": "8909858f9cbfc16ad1b4a2a4b61ff7a3db843251"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/278b643f2a5ec1b92fd60b2d7dac034f3a52ea4e",
-                "reference": "278b643f2a5ec1b92fd60b2d7dac034f3a52ea4e",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/8909858f9cbfc16ad1b4a2a4b61ff7a3db843251",
+                "reference": "8909858f9cbfc16ad1b4a2a4b61ff7a3db843251",
                 "shasum": ""
             },
             "require": {
@@ -412,7 +412,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2019-12-20T03:33:58+00:00"
+            "time": "2020-02-23T21:11:52+00:00"
         },
         {
             "name": "ulrichsg/getopt-php",
@@ -462,16 +462,16 @@
         },
         {
             "name": "wp-coding-standards/wpcs",
-            "version": "2.2.0",
+            "version": "2.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/WordPress/WordPress-Coding-Standards.git",
-                "reference": "f90e8692ce97b693633db7ab20bfa78d930f536a"
+                "reference": "b5a453203114cc2284b1a614c4953456fbe4f546"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/WordPress/WordPress-Coding-Standards/zipball/f90e8692ce97b693633db7ab20bfa78d930f536a",
-                "reference": "f90e8692ce97b693633db7ab20bfa78d930f536a",
+                "url": "https://api.github.com/repos/WordPress/WordPress-Coding-Standards/zipball/b5a453203114cc2284b1a614c4953456fbe4f546",
+                "reference": "b5a453203114cc2284b1a614c4953456fbe4f546",
                 "shasum": ""
             },
             "require": {
@@ -479,12 +479,12 @@
                 "squizlabs/php_codesniffer": "^3.3.1"
             },
             "require-dev": {
-                "dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
+                "dealerdirect/phpcodesniffer-composer-installer": "^0.5 || ^0.6",
                 "phpcompatibility/php-compatibility": "^9.0",
                 "phpunit/phpunit": "^4.0 || ^5.0 || ^6.0 || ^7.0"
             },
             "suggest": {
-                "dealerdirect/phpcodesniffer-composer-installer": "^0.5.0 || This Composer plugin will sort out the PHPCS 'installed_paths' automatically."
+                "dealerdirect/phpcodesniffer-composer-installer": "^0.6 || This Composer plugin will sort out the PHPCS 'installed_paths' automatically."
             },
             "type": "phpcodesniffer-standard",
             "notification-url": "https://packagist.org/downloads/",
@@ -503,7 +503,7 @@
                 "standards",
                 "wordpress"
             ],
-            "time": "2019-11-11T12:34:03+00:00"
+            "time": "2020-02-04T02:52:06+00:00"
         }
     ],
     "packages-dev": [],
