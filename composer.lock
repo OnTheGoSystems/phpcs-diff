@@ -169,12 +169,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/OnTheGoSystems/toolset-coding-standards.git",
-                "reference": "379b3216b40578fe42644318fa2681a681c9c4a7"
+                "reference": "4b5e1b3210fc7d02130a0c4ad62fb58acc9315c8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/OnTheGoSystems/toolset-coding-standards/zipball/379b3216b40578fe42644318fa2681a681c9c4a7",
-                "reference": "379b3216b40578fe42644318fa2681a681c9c4a7",
+                "url": "https://api.github.com/repos/OnTheGoSystems/toolset-coding-standards/zipball/4b5e1b3210fc7d02130a0c4ad62fb58acc9315c8",
+                "reference": "4b5e1b3210fc7d02130a0c4ad62fb58acc9315c8",
                 "shasum": ""
             },
             "require": {
@@ -209,7 +209,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2020-02-24T09:29:07+00:00"
+            "time": "2020-03-10T10:58:10+00:00"
         },
         {
             "name": "sebastian/diff",
@@ -369,12 +369,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "8909858f9cbfc16ad1b4a2a4b61ff7a3db843251"
+                "reference": "1dbc333797a43c3e36697c24c66d3c1f8364faa2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/8909858f9cbfc16ad1b4a2a4b61ff7a3db843251",
-                "reference": "8909858f9cbfc16ad1b4a2a4b61ff7a3db843251",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/1dbc333797a43c3e36697c24c66d3c1f8364faa2",
+                "reference": "1dbc333797a43c3e36697c24c66d3c1f8364faa2",
                 "shasum": ""
             },
             "require": {
@@ -412,7 +412,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2020-02-23T21:11:52+00:00"
+            "time": "2020-03-09T21:32:33+00:00"
         },
         {
             "name": "ulrichsg/getopt-php",
