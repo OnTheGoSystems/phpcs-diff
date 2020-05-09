@@ -29,7 +29,6 @@ const OUTPUT_UNDERLINED = "\033[4m";
 const OUTPUT_UNUNDERLINED = "\033[24m";
 
 $logo = file_get_contents( PHPCS_DIFF_PLUGIN_DIR . '/logo' );
-echo "\n$logo\n" . OUTPUT_UNDERLINED . COLOUR_SECONDARY . 'https://github.com/zaantar/phpcs-diff' . OUTPUT_RESET . "\n\n";
 
 require_once PHPCS_DIFF_PLUGIN_DIR . '/vendor/autoload.php';
 
@@ -48,6 +47,7 @@ $getopt = new GetOpt(
 		[ 'excluded_exts', GetOpt::OPTIONAL_ARGUMENT ],
 		[ 'standards_location', GetOpt::OPTIONAL_ARGUMENT ],
 		[ 'default_standards_location', GetOpt::NO_ARGUMENT ],
+		[ 'format', GetOpt::OPTIONAL_ARGUMENT ],
 	]
 );
 
@@ -83,6 +83,8 @@ $no_colours = $getopt->offsetExists( 'no_colours' );
 $excluded_exts = $getopt->getOption( 'excluded_exts' );
 $standards_location = $getopt->getOption( 'standards_location' );
 $default_standards_location = $getopt->getOption( 'default_standards_location' );
+$format = $getopt->getOption( 'format' );
+$do_echo = $format !== 'json';
 
 $sniff_unstaged = $getopt->offsetExists( 'sniff_unstaged' );
 if ( $sniff_unstaged ) {
@@ -137,10 +139,14 @@ if( $default_standards_location ) {
 }
 
 $logger = new Log\ShellLogger( (int) $log_level );
-$options = [ 'ignore-space-change' => $ignore_space_changes, 'standards_location' => $standards_location ];
+$options = [ 'ignore-space-change' => $ignore_space_changes, 'standards_location' => $standards_location, 'format' => $format ];
 $version_control = new Backends\Git( '', $logger, $options );
 $controller = new Main( $version_control, $logger, $options );
 $controller->set_phpcs_standard( $phpcs_standard );
+
+if ( $do_echo ) {
+	echo "\n$logo\n" . OUTPUT_UNDERLINED . COLOUR_SECONDARY . 'https://github.com/zaantar/phpcs-diff' . OUTPUT_RESET . "\n\n";
+}
 
 try {
 	$found_issues = $controller->run( $start_revision, $end_revision, '', $excluded_exts );
@@ -199,6 +205,15 @@ function echo_chapter( $title, $items ) {
 	}
 
 	echo PHP_EOL;
+}
+
+if ( $format === 'json' ) {
+	echo json_encode( array(
+		'blockers' => $blockers,
+		'warnings' => $warnings,
+		'notes' => $notes,
+	) );
+	exit();
 }
 
 echo PHP_EOL;

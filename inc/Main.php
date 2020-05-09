@@ -26,6 +26,8 @@ class Main {
 
 	private $no_diff_to_big = false;
 
+	private $format = false;
+
 	/** @var LoggerInterface */
 	private $log;
 
@@ -50,6 +52,7 @@ class Main {
 		$this->allowed_extensions = array( 'php', 'js' );
 
 		$this->log = $log;
+		$this->log->set_enable( $this->format !== 'json' );
 	}
 
 	public function set_nocache( $nocache = false ) {

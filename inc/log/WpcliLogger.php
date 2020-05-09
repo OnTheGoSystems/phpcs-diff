@@ -10,6 +10,7 @@ namespace PHPCSDiff\Log;
  * @package PHPCSDiff\Log
  */
 class WpcliLogger implements LoggerInterface {
+	private $enable = true;
 
 	/** @noinspection PhpDocMissingThrowsInspection */
 	/**
@@ -19,6 +20,10 @@ class WpcliLogger implements LoggerInterface {
 	 * @return void
 	 */
 	public function log( $severity, $message ) {
+		if ( ! $this->enable ) {
+			return;
+		}
+
 		switch( $severity ) {
 			case LoggerInterface::ERROR:
 				/** @noinspection PhpUnhandledExceptionInspection */
@@ -32,6 +37,15 @@ class WpcliLogger implements LoggerInterface {
 				\WP_CLI::log( $message );
 				break;
 		}
+	}
+
+	/**
+	 * @param $enable boolea
+	 *
+	 * @return void
+	 */
+	public function set_enable( $enable ) {
+		$this->enable = $enable;
 	}
 
 }

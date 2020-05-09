@@ -23,4 +23,11 @@ interface LoggerInterface {
 	 */
 	public function log( $severity, $message );
 
+	/**
+	 * @param $enable boolea
+	 *
+	 * @return void
+	 */
+	public function set_enable( $enable );
+
 }

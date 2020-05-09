@@ -6,7 +6,7 @@ namespace PHPCSDiff\Log;
 class ShellLogger implements LoggerInterface {
 
 	private $log_level;
-
+	private $enable = true;
 
 	public function __construct( $log_level = LoggerInterface::WARNING ) {
 		$this->log_level = $log_level;
@@ -20,7 +20,7 @@ class ShellLogger implements LoggerInterface {
 	 */
 	public function log( $severity, $message ) {
 
-		if( $this->log_level > $severity ) {
+		if( $this->log_level > $severity || ! $this->enable ) {
 			return;
 		}
 
@@ -36,4 +36,14 @@ class ShellLogger implements LoggerInterface {
 				break;
 		}
 	}
+
+	/**
+	 * @param $enable boolea
+	 *
+	 * @return void
+	 */
+	public function set_enable( $enable ) {
+		$this->enable = $enable;
+	}
+
 }
