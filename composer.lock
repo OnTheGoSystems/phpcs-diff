@@ -169,12 +169,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/OnTheGoSystems/toolset-coding-standards.git",
-                "reference": "4b5e1b3210fc7d02130a0c4ad62fb58acc9315c8"
+                "reference": "1b69fd710f965b3a37f9c5415345151deccc6898"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/OnTheGoSystems/toolset-coding-standards/zipball/4b5e1b3210fc7d02130a0c4ad62fb58acc9315c8",
-                "reference": "4b5e1b3210fc7d02130a0c4ad62fb58acc9315c8",
+                "url": "https://api.github.com/repos/OnTheGoSystems/toolset-coding-standards/zipball/1b69fd710f965b3a37f9c5415345151deccc6898",
+                "reference": "1b69fd710f965b3a37f9c5415345151deccc6898",
                 "shasum": ""
             },
             "require": {
@@ -209,7 +209,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2020-03-10T10:58:10+00:00"
+            "time": "2020-05-11T10:43:31+00:00"
         },
         {
             "name": "sebastian/diff",
@@ -369,12 +369,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "1dbc333797a43c3e36697c24c66d3c1f8364faa2"
+                "reference": "ce62dee92da3b038a399a99353fc055b39d2853e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/1dbc333797a43c3e36697c24c66d3c1f8364faa2",
-                "reference": "1dbc333797a43c3e36697c24c66d3c1f8364faa2",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/ce62dee92da3b038a399a99353fc055b39d2853e",
+                "reference": "ce62dee92da3b038a399a99353fc055b39d2853e",
                 "shasum": ""
             },
             "require": {
@@ -412,7 +412,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2020-03-09T21:32:33+00:00"
+            "time": "2020-05-01T04:18:46+00:00"
         },
         {
             "name": "ulrichsg/getopt-php",
@@ -517,5 +517,6 @@
     "platform": {
         "php": "^7"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "1.1.0"
 }
