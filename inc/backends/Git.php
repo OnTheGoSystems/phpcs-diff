@@ -90,7 +90,7 @@ class Git implements BackendInterface {
 		// Otherwise, the algorithm in ChunkBuilder::process_chunk() will not work properly.
 		//
 		// This is why we use the --unified=0 argument.
-		$command = "git diff --unified=0 $arg_git_dir $arg_ignore_whitespace $start_commit $end_commit";
+		$command = "git diff --unified=0 $arg_git_dir $arg_ignore_whitespace $start_commit $end_commit ':!*.json' ':!*.js' ':!*.css'";
 
 		$this->log->log( LoggerInterface::INFO, 'Generating a git diff between the selected commits: ' . $command );
 		$diff = shell_exec( $command );
@@ -108,7 +108,7 @@ class Git implements BackendInterface {
 	 * @return string
 	 */
 	private function get_diff_for_unstaged_changes( $git_args, $start_commit ) {
-		$command = "git diff --unified=0 $git_args $start_commit";
+		$command = "git diff --unified=0 $git_args $start_commit ':!*.json' ':!*.js' ':!*.css'";
 
 		$this->log->log( LoggerInterface::INFO, 'Generating a diff between unstaged changes and the selected commit: ' . $command );
 
