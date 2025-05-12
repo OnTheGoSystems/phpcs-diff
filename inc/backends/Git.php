@@ -202,7 +202,7 @@ class Git implements BackendInterface {
 		}
 
 		$phpcs_command = sprintf(
-			'%s --report=json %s %s --stdin-path=%s -',
+			'%s --report=json -q %s %s --stdin-path=%s -',
 			escapeshellcmd( $phpcs_command ),
 			$standards_location_arg,
 			$phpcs_standard_arg,
